@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GPS-мониторинг транспорта и контроль топлива в Казахстане | Multitrack — Контроль Техники</title>
+<meta name="description" content="GPS-мониторинг транспорта: видите каждую машину на карте и каждый литр топлива. Официальный дилер Omnicomm в Казахстане. Установка за 1 день, поддержка 24/7. Астана, Алматы, Кокшетау, Тараз. +7 777 870 3080">
+<meta name="keywords" content="GPS мониторинг транспорта, GPS трекер, контроль топлива, датчики уровня топлива, Omnicomm Казахстан, мониторинг спецтехники, Астана">
+<link rel="canonical" href="https://multitrack.kz/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_KZ">
+<meta property="og:site_name" content="Multitrack · Контроль Техники">
+<meta property="og:title" content="GPS-мониторинг транспорта и контроль топлива в Казахстане">
+<meta property="og:description" content="Где машина, сколько топлива и кто слил. Официальный дилер Omnicomm. Установка за 1 день, поддержка 24/7.">
+<meta property="og:url" content="https://multitrack.kz/">
+<meta property="og:image" content="https://images.unsplash.com/photo-1708193203896-ba0630862bb6?auto=format&fit=crop&w=1200&h=630&q=70">
+<meta name="theme-color" content="#0B1B33">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B1B33'/%3E%3Cpath d='M32 10c-9 0-16 7-16 16 0 12 16 28 16 28s16-16 16-28c0-9-7-16-16-16z' fill='%231557FF'/%3E%3Ccircle cx='32' cy='26' r='6' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Контроль Техники (Multitrack)",
+  "description": "GPS-мониторинг транспорта и контроль топлива. Официальный дилер Omnicomm в Казахстане.",
+  "url": "https://multitrack.kz/",
+  "telephone": "+77778703080",
+  "email": "sales@multitrack.kz",
+  "address": {"@type": "PostalAddress", "streetAddress": "ул. Шыганак 1, н.п. 1", "addressLocality": "Астана", "addressCountry": "KZ"},
+  "openingHours": "Mo-Fr 09:00-18:00",
+  "areaServed": ["Астана", "Алматы", "Кокшетау", "Тараз", "Казахстан"]
+}
+</script>
+<style>
+/* Светлая «витрина»: белые карточки на холодном сером, крупные фото, один оранжевый цвет только для кнопок продажи, синий для всего, что про GPS. */
+:root{
+  --bg:#F3F5F9; --surface:#FFFFFF; --ink:#0B1B33; --muted:#5B6B82; --line:#DCE3ED; --line-2:#C5CFDD;
+  --blue:#1557FF; --blue-soft:#E8EEFF; --orange:#FF6B1A; --orange-dark:#E85A0C; --green:#12A66A; --green-soft:#E4F7EE; --red:#E5484D;
+  --display:'Unbounded',system-ui,-apple-system,sans-serif;
+  --body:'Onest',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  --gutter:clamp(16px,4vw,32px); --maxw:1120px; --header:64px; --r:14px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:var(--body);font-size:16px;line-height:1.5;overflow-x:hidden;padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+@media (min-width:900px){body{padding-bottom:0}}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(28px,7vw,54px);font-weight:800}
+h2{font-size:clamp(22px,5.4vw,38px);font-weight:700}
+h3{font-size:clamp(16px,4.2vw,20px);font-weight:600}
+p{margin:0}
+.skip{position:absolute;left:-999px;top:8px;background:var(--orange);color:#fff;padding:8px 12px;z-index:100}
+.skip:focus{left:8px}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* шапка */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.hdr-in{height:var(--header);display:flex;align-items:center;justify-content:space-between;gap:12px;padding-inline:var(--gutter);max-width:var(--maxw);margin:0 auto}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+.logo-mark{width:36px;height:36px;flex:none}
+.logo-txt{display:flex;flex-direction:column;min-width:0}
+.logo-t{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;line-height:1.1;white-space:nowrap}
+.logo-s{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hdr-r{display:flex;align-items:center;gap:8px}
+.hdr-call{display:none;text-decoration:none;font-weight:600;font-size:15px;padding:10px 14px;border:1px solid var(--line-2);border-radius:10px;white-space:nowrap}
+.hdr .hdr-cta{display:none}
+@media (min-width:720px){.hdr-call{display:inline-block}}
+@media (min-width:900px){.hdr .hdr-cta{display:inline-flex}}
+.ic-btn{width:44px;height:44px;border:1px solid var(--line-2);background:#fff;border-radius:10px;display:grid;place-items:center;cursor:pointer;padding:0}
+.ic-btn svg{width:22px;height:22px}
+.nav{position:fixed;inset:0;z-index:45;background:rgba(255,255,255,.98);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .25s,transform .25s,visibility 0s .25s;overflow:auto;padding:calc(var(--header) + env(safe-area-inset-top,0px) + 10px) var(--gutter) 100px}
+.nav.open{opacity:1;visibility:visible;transform:none;transition:opacity .25s,transform .25s}
+.nav-in{max-width:720px;margin:0 auto}
+.nav h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin:22px 0 6px;font-weight:700}
+.nav a{display:block;text-decoration:none;padding:12px 0;border-bottom:1px solid var(--line);font-weight:600;font-size:17px}
+.nav a.sub{font-weight:500;font-size:15px;color:var(--muted);padding:9px 0 9px 14px}
+.nav a.sub::before{content:"→ ";color:var(--blue)}
+
+/* кнопки */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-family:var(--body);font-weight:700;font-size:16px;padding:0 22px;min-height:54px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:transform .15s,background .15s,box-shadow .15s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-p{background:var(--orange);color:#fff;box-shadow:0 10px 24px -10px rgba(255,107,26,.7)}
+.btn-p:hover{background:var(--orange-dark)}
+.btn-o{background:#fff;border-color:var(--line-2);color:var(--ink)}
+.btn-o:hover{border-color:var(--ink)}
+.btn-wa{background:#22C55E;color:#fff}
+.btn-wa:hover{background:#16A34A}
+.btn-sm{min-height:46px;font-size:15px;padding:0 18px}
+.btn svg{width:20px;height:20px;flex:none}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.btns .btn{flex:1 1 200px}
+
+/* секции */
+.sec{padding-block:clamp(44px,8vw,88px);scroll-margin-top:calc(var(--header) + 8px)}
+.sec-alt{background:var(--surface);border-block:1px solid var(--line)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gutter)}
+.hero-grid,.three,.split,.steps,.eq,.calc,.out,.cases,.why,.why-list,.contact-grid,.cts,.veh-grid,.form{grid-template-columns:minmax(0,1fr)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:12px}
+.eyebrow::before{content:"";width:18px;height:3px;border-radius:2px;background:var(--blue)}
+.lead{font-size:clamp(16px,4.2vw,19px);color:var(--muted);margin-top:12px;max-width:62ch}
+.sec-head{margin-bottom:clamp(20px,5vw,36px)}
+.center{text-align:center}
+.center .lead{margin-inline:auto}
+.center .eyebrow{justify-content:center}
+.ph{margin:0;position:relative;overflow:hidden;border-radius:var(--r);background:#DCE3ED}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph.r43{aspect-ratio:4/3}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:6px 10px;border-radius:999px;background:var(--blue-soft);color:var(--blue)}
+.tag.g{background:var(--green-soft);color:var(--green)}
+
+/* hero */
+.hero{padding-block:clamp(28px,6vw,64px) clamp(28px,6vw,56px)}
+.hero-grid{display:grid;gap:20px;grid-template-areas:"top" "ph" "bottom"}
+.hero-top{grid-area:top}.hero-ph{grid-area:ph}.hero-bottom{grid-area:bottom}
+@media (min-width:900px){.hero-grid{grid-template-columns:1fr 1fr;grid-template-areas:"top ph" "bottom ph";gap:12px 40px;align-items:center}.hero-top{align-self:end}.hero-bottom{align-self:start}}
+.hero h1 span{color:var(--blue)}
+.plain{margin-top:16px;font-size:clamp(17px,4.6vw,21px);line-height:1.45;color:var(--ink);max-width:34ch}
+.plain b{font-weight:700;background:linear-gradient(transparent 60%,#FFE1C9 60%)}
+.hero .btns{margin-top:0}
+.trust{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+@media (min-width:560px){.trust{grid-template-columns:repeat(4,1fr)}}
+.trust div{padding:12px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.trust b{display:block;font-family:var(--display);font-weight:700;font-size:clamp(18px,5vw,24px);color:var(--ink);line-height:1.1}
+.trust span{display:block;font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.3}
+.hero-ph{position:relative}
+.hero-ph .ph{aspect-ratio:4/3}
+@media (min-width:900px){.hero-ph .ph{aspect-ratio:5/5.4}}
+.live{position:absolute;left:12px;right:12px;bottom:12px;background:rgba(255,255,255,.96);border-radius:12px;padding:12px 14px;box-shadow:0 12px 32px -12px rgba(11,27,51,.45);display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+@media (min-width:480px){.live{left:16px;right:auto;bottom:16px;min-width:320px}}
+.live .dot{width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(18,166,106,.2)}
+.live .n{font-weight:700;font-size:14px}
+.live .d{font-size:12.5px;color:var(--muted);margin-top:2px}
+.live .f{text-align:right;font-family:var(--mono);font-size:14px;color:var(--blue);font-weight:500;white-space:nowrap}
+.live .f small{display:block;font-family:var(--body);color:var(--muted);font-weight:400;font-size:11px}
+.pin{position:absolute;top:36%;left:50%;width:30px;height:30px;border-radius:50% 50% 50% 0;background:var(--blue);transform:translate(-50%,-100%) rotate(-45deg);box-shadow:0 8px 20px -6px rgba(21,87,255,.8);border:3px solid #fff}
+.pin::after{content:"";position:absolute;inset:7px;border-radius:50%;background:#fff}
+
+/* три выгоды */
+.three{display:grid;gap:14px}
+@media (min-width:720px){.three{grid-template-columns:repeat(3,1fr)}}
+.three .card{display:grid;align-content:start}
+.three .ph{border-radius:0;aspect-ratio:16/10}
+.three .t{padding:16px 18px 18px}
+.three h3{margin-top:4px}
+.three p{color:var(--muted);font-size:15px;margin-top:6px}
+
+/* техника: секции */
+.veh{padding-block:clamp(14px,3vw,24px)}
+.veh:first-of-type{padding-top:clamp(44px,8vw,88px)}
+.veh-grid{display:grid;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+@media (min-width:860px){.veh-grid{grid-template-columns:1.15fr 1fr}.veh.flip .veh-grid{grid-template-columns:1fr 1.15fr}.veh.flip .veh-ph{order:2}}
+.veh-ph{aspect-ratio:16/10;position:relative;background:#DCE3ED}
+@media (min-width:860px){.veh-ph{aspect-ratio:auto;min-height:100%}}
+.veh-ph img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.veh-ph .tag{position:absolute;left:14px;top:14px;background:rgba(255,255,255,.95)}
+.veh-t{padding:clamp(18px,4vw,32px)}
+.veh-t h2{font-size:clamp(20px,5vw,30px)}
+.ul{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.ul li{display:flex;gap:10px;align-items:flex-start;font-size:15.5px;line-height:1.4}
+.ul li::before{content:"";flex:none;width:20px;height:20px;border-radius:50%;background:var(--green-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2312A66A' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 10.5l3.2 3L15 7'/%3E%3C/svg%3E") center/14px no-repeat;margin-top:1px}
+.ul li b{font-weight:600}
+.res{margin-top:14px;display:inline-block;padding:9px 12px;border-radius:10px;background:var(--green-soft);color:#0B7A4E;font-weight:600;font-size:14px;line-height:1.4}
+.res b{font-family:var(--display);font-weight:700;font-size:16px;padding-inline:2px}
+.veh-t .btns{margin-top:18px}
+
+/* как работает */
+.steps{display:grid;gap:12px;counter-reset:s}
+@media (min-width:720px){.steps{grid-template-columns:repeat(3,1fr)}}
+.step{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:8px;align-content:start;counter-increment:s}
+.step::before{content:counter(s);width:40px;height:40px;border-radius:12px;background:var(--ink);color:#fff;font-family:var(--display);font-weight:700;display:grid;place-items:center;font-size:16px}
+.step h3{font-size:17px}
+.step p{color:var(--muted);font-size:14.5px}
+.step .time{font-family:var(--mono);font-size:12px;color:var(--blue);font-weight:500}
+
+/* контроль топлива, платформа */
+.split{display:grid;gap:18px;align-items:center}
+@media (min-width:860px){.split{grid-template-columns:1fr 1fr;gap:40px}}
+.guar{margin-top:16px;padding:14px 16px;border-radius:12px;border:2px solid var(--ink);display:flex;gap:12px;align-items:center;background:var(--surface)}
+.guar b{font-family:var(--display);font-weight:800;font-size:clamp(22px,6vw,30px);line-height:1;white-space:nowrap}
+.guar span{font-size:14.5px;line-height:1.35}
+.feat4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.feat4 div{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:14px;font-weight:600;display:flex;gap:10px;align-items:center}
+.feat4 svg{width:22px;height:22px;flex:none;stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* оборудование */
+.eq{display:grid;gap:12px}
+@media (min-width:720px){.eq{grid-template-columns:repeat(3,1fr)}}
+.eq .card{padding:18px;display:grid;gap:8px;align-content:start;background:var(--bg)}
+.eq .k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.eq h3{font-size:17px}
+.eq p{color:var(--muted);font-size:14.5px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.chips span{font-size:12.5px;font-weight:600;padding:5px 9px;border-radius:999px;border:1px solid var(--line-2);background:#fff}
+.chips span.hi{border-color:var(--blue);color:var(--blue);background:var(--blue-soft)}
+
+/* калькулятор */
+.calc{display:grid;gap:16px}
+@media (min-width:860px){.calc{grid-template-columns:1fr 1fr;gap:24px;align-items:start}}
+.calc .card{padding:20px}
+.field label{display:flex;justify-content:space-between;align-items:baseline;font-size:14.5px;color:var(--muted);margin-bottom:6px;gap:10px}
+.field label output{font-family:var(--display);font-weight:700;font-size:18px;color:var(--ink);white-space:nowrap}
+.field + .field{margin-top:16px}
+input[type=range]{width:100%;appearance:none;-webkit-appearance:none;height:36px;background:transparent;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:6px;background:var(--line-2);border-radius:3px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--blue);border:4px solid #fff;margin-top:-11px;box-shadow:0 2px 10px rgba(21,87,255,.45);cursor:pointer}
+input[type=range]::-moz-range-track{height:6px;background:var(--line-2);border-radius:3px}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--blue);border:4px solid #fff;box-shadow:0 2px 10px rgba(21,87,255,.45);cursor:pointer}
+.note{font-size:13.5px;color:var(--muted);margin-top:10px}
+.out{display:grid;gap:10px}
+.big{padding:18px 20px;border-radius:var(--r);background:var(--ink);color:#fff}
+.big small{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.7;margin-bottom:6px}
+.big b{display:block;font-family:var(--display);font-weight:700;font-size:clamp(22px,6vw,32px);line-height:1.1;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.big.y{background:var(--green)}
+.big i{display:block;font-style:normal;font-size:13.5px;opacity:.8;margin-top:6px}
+
+/* кейсы */
+.cases{display:grid;gap:12px}
+@media (min-width:860px){.cases{grid-template-columns:1.2fr 1fr 1fr}}
+.cases .ph{aspect-ratio:4/3}
+@media (min-width:860px){.cases .ph{aspect-ratio:auto;min-height:100%}}
+.case{padding:20px;display:grid;gap:8px;align-content:start;background:var(--bg)}
+.case .k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.case .num{font-family:var(--display);font-weight:800;font-size:clamp(28px,7vw,40px);color:var(--green);line-height:1}
+.case .num small{display:block;font-family:var(--body);font-weight:600;font-size:13px;color:var(--ink);margin-top:6px}
+.case p{color:var(--muted);font-size:14.5px}
+.quote{margin:12px 0 0;padding:20px 22px;border-radius:var(--r);background:var(--bg);border:1px solid var(--line);font-size:15.5px;line-height:1.55;border-left:4px solid var(--blue)}
+.quote footer{margin-top:10px;font-size:13px;color:var(--muted);font-weight:600}
+
+/* почему мы */
+.why{display:grid;gap:18px}
+@media (min-width:860px){.why{grid-template-columns:1fr 1fr;align-items:center;gap:40px}}
+.why-list{display:grid;gap:10px;margin-top:18px}
+.why-list div{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.why-list svg{width:24px;height:24px;flex:none;stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.why-list b{display:block;font-weight:700;font-size:15px}
+.why-list span{color:var(--muted);font-size:14px}
+.badge{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;background:var(--ink);color:#fff;font-size:13px;font-weight:600;letter-spacing:.04em;margin-top:14px}
+.badge i{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#fff,#9aa6b8)}
+.cities{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.cities span{font-weight:600;font-size:13.5px;padding:8px 12px;border-radius:999px;background:var(--bg);border:1px solid var(--line-2)}
+
+/* форма */
+.form{display:grid;gap:12px;padding:20px;background:var(--bg)}
+.f{display:grid;gap:6px}
+.f label{font-size:13.5px;color:var(--muted);font-weight:600}
+.f input,.f select,.f textarea{width:100%;font:inherit;color:var(--ink);background:#fff;border:1px solid var(--line-2);border-radius:10px;padding:13px 14px;min-height:52px}
+.f textarea{min-height:88px;resize:vertical}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(21,87,255,.15)}
+.ok-msg{display:none;padding:14px;border-radius:10px;background:var(--green-soft);color:#0B7A4E;font-weight:600;font-size:14.5px}
+.ok-msg.show{display:block}
+.contact-grid{display:grid;gap:16px}
+@media (min-width:860px){.contact-grid{grid-template-columns:1.1fr 1fr;gap:32px;align-items:start}}
+.cts{display:grid;gap:10px}
+.ct{padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.ct small{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
+.ct a{text-decoration:none;font-weight:700;font-size:17px;overflow-wrap:anywhere}
+.ct span{display:block;color:var(--muted);font-size:13.5px;margin-top:3px}
+
+footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+.ft{display:grid;gap:12px}
+.ft .soc{display:flex;flex-wrap:wrap;gap:14px}
+.ft a{color:var(--muted)}
+
+/* нижняя панель на телефоне */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:40;transform:translateY(110%);transition:transform .25s;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:10px}
+.bar.show{transform:none}
+.bar .btn-p{flex:1}
+.bar .btn-wa{width:54px;padding:0}
+@media (min-width:900px){.bar{display:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#start">К содержанию</a>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <a class="logo" href="#start" aria-label="Контроль Техники, на главную">
+      <svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0B1B33"/><path d="M32 12c-8 0-14 6-14 14 0 11 14 26 14 26s14-15 14-26c0-8-6-14-14-14z" fill="#1557FF"/><circle cx="32" cy="26" r="5.5" fill="#fff"/></svg>
+      <span class="logo-txt"><span class="logo-t">Контроль Техники</span><span class="logo-s">официальный дилер Omnicomm</span></span>
+    </a>
+    <div class="hdr-r">
+      <a class="hdr-call" href="tel:+77778703080">+7 777 870 3080</a>
+      <a class="btn btn-p btn-sm hdr-cta" href="#kontakty">Рассчитать стоимость</a>
+      <button class="ic-btn" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="nav" id="nav" aria-label="Разделы сайта">
+  <div class="nav-in">
+    <h4>Услуги</h4>
+    <a href="#gps-monitoring">GPS-мониторинг транспорта</a>
+    <a href="#kontrol-topliva">Контроль топлива</a>
+    <a class="sub" href="#gruzovye">Грузовой транспорт</a>
+    <a class="sub" href="#spectehnika">Спецтехника</a>
+    <a class="sub" href="#selhoz">Сельхозтехника</a>
+    <a class="sub" href="#karernaya">Карьерная техника</a>
+    <a class="sub" href="#toplivozapravshik">Топливозаправщики</a>
+    <a class="sub" href="#legkovye">Легковые и служебные</a>
+    <a href="#montazh">Как это работает</a>
+    <a href="#platforma">Платформа Multitrack</a>
+    <a href="#oborudovanie">Оборудование Omnicomm</a>
+    <h4>Решение</h4>
+    <a href="#kalkulyator">Калькулятор экономии</a>
+    <a href="#keisy">Кейсы</a>
+    <a href="#pochemu-my">Почему мы</a>
+    <a href="#kontakty">Контакты и заявка</a>
+    <div class="btns" style="margin-top:22px">
+      <a class="btn btn-wa" href="https://wa.me/77778703080?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20GPS-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn btn-o" href="tel:+77778703080">+7 777 870 3080</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<section class="sec hero" id="start">
+  <div class="wrap hero-grid">
+    <div class="hero-top">
+      <div class="eyebrow">Официальный дилер Omnicomm</div>
+      <h1>GPS-мониторинг транспорта <span>и контроль топлива</span></h1>
+      <p class="plain">Прибор в машину, датчик в бак. На телефоне видите: <b>где машина, сколько топлива и кто слил.</b></p>
+    </div>
+    <div class="hero-bottom">
+      <div class="btns">
+        <a class="btn btn-p" href="#kontakty">Рассчитать стоимость</a>
+        <a class="btn btn-wa" href="https://wa.me/77778703080?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20GPS-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2m0 1.67c4.54 0 8.24 3.7 8.24 8.24s-3.7 8.24-8.24 8.24c-1.5 0-2.97-.41-4.25-1.18l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.35c0-4.54 3.7-8.24 8.3-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.14.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01"/></svg>Написать в WhatsApp</a>
+      </div>
+      <div class="trust">
+        <div><b>1000+</b><span>машин подключено в Казахстане</span></div>
+        <div><b>до 40%</b><span>экономии топлива</span></div>
+        <div><b>1 день</b><span>от звонка до установки</span></div>
+        <div><b>24/7</b><span>техподдержка</span></div>
+      </div>
+    </div>
+    <div class="hero-ph">
+      <figure class="ph"><img src="https://images.unsplash.com/photo-1708193203896-ba0630862bb6?auto=format&fit=crop&w=1200&q=72" alt="Грузовики на трассе, вид сверху" fetchpriority="high"></figure>
+      <span class="pin" aria-hidden="true"></span>
+      <div class="live" aria-label="Пример карточки машины в приложении">
+        <span class="dot"></span>
+        <div><div class="n">КамАЗ 65115 · 412 ABC 01</div><div class="d">В движении · 62 км/ч · трасса Астана–Караганда</div></div>
+        <div class="f">312 л<small>топливо в баке</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ЧТО ВЫ ПОЛУЧИТЕ -->
+<section class="sec sec-alt" id="gps-monitoring">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">GPS-мониторинг транспорта</div>
+      <h2>Вся техника на одном экране</h2>
+      <p class="lead">Открыли приложение и видите всё, что происходит с парком. Без звонков водителям.</p>
+    </div>
+    <div class="three">
+      <div class="card">
+        <figure class="ph"><img src="https://images.unsplash.com/photo-1604357209793-fca5dca89f97?auto=format&fit=crop&w=900&q=70" alt="Карта с маршрутом на экране смартфона" loading="lazy"></figure>
+        <div class="t"><span class="tag">Где машина</span><h3>Карта в реальном времени</h3><p>Точка на дороге, скорость, маршрут за любой день, стоянки и геозоны.</p></div>
+      </div>
+      <div class="card">
+        <figure class="ph"><img src="https://images.unsplash.com/photo-1530566855378-5bfa35ed0795?auto=format&fit=crop&w=900&q=70" alt="Заправочная колонка с дизельным топливом" loading="lazy"></figure>
+        <div class="t"><span class="tag g">Сколько топлива</span><h3>Заправки и сливы</h3><p>Каждый литр: сколько залили, сколько сожгли, где и когда слили.</p></div>
+      </div>
+      <div class="card">
+        <figure class="ph"><img src="https://images.unsplash.com/photo-1603638725135-928baf863eff?auto=format&fit=crop&w=900&q=70" alt="Планшет с отчётами в кабине автомобиля" loading="lazy"></figure>
+        <div class="t"><span class="tag">Что случилось</span><h3>Отчёты и уведомления</h3><p>Пробег, моточасы, простои. Слив или выезд за зону приходят сразу на телефон.</p></div>
+      </div>
+    </div>
+    <div class="btns" style="margin-top:22px;justify-content:center"><a class="btn btn-p" href="#kontakty" style="flex:0 1 320px">Подключить мониторинг</a></div>
+  </div>
+</section>
+
+<!-- КОНТРОЛЬ ТОПЛИВА -->
+<section class="sec" id="kontrol-topliva">
+  <div class="wrap split">
+    <figure class="ph r43"><img src="https://images.unsplash.com/photo-1453509337612-46f7e5e7f6b3?auto=format&fit=crop&w=1000&q=70" alt="Топливозаправочный кран" loading="lazy"></figure>
+    <div>
+      <div class="eyebrow">Контроль топлива</div>
+      <h2>Датчик в баке. Сливы заканчиваются в первую неделю</h2>
+      <ul class="ul">
+        <li><b>Датчик Omnicomm LLS5</b> ставится в бак любой машины и техники</li>
+        <li>Отличает заправку от слива, не путает тряску с расходом</li>
+        <li>Сверка с топливными картами: по чеку и по факту в баке</li>
+        <li>Пожизненная гарантия на датчики</li>
+      </ul>
+      <div class="guar"><b>3%</b><span>точность по топливу. Если датчик ошибается больше, возвращаем деньги</span></div>
+      <div class="btns" style="margin-top:18px"><a class="btn btn-p" href="#kontakty">Поставить датчики</a><a class="btn btn-o" href="#kalkulyator">Посчитать экономию</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ТЕХНИКА -->
+<section class="sec veh" id="gruzovye">
+  <div class="wrap">
+    <div class="veh-grid">
+      <div class="veh-ph"><img src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=1200&q=70" alt="Ряд грузовиков на стоянке" loading="lazy"><span class="tag">Грузовой транспорт</span></div>
+      <div class="veh-t">
+        <h2>Фуры, КамАЗы, доставка</h2>
+        <ul class="ul">
+          <li>Был ли у клиента, сколько стоял под разгрузкой</li>
+          <li>Реальный расход на 100 км против нормы</li>
+          <li>Холостой ход и простои по каждой машине</li>
+        </ul>
+        <div class="res">Обычно <b>−25%</b> к пробегу за первый месяц</div>
+        <div class="btns"><a class="btn btn-p" href="#kontakty">Подключить грузовые</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec veh flip" id="spectehnika">
+  <div class="wrap">
+    <div class="veh-grid">
+      <div class="veh-ph"><img src="https://images.unsplash.com/photo-1575281923032-f40d94ef6160?auto=format&fit=crop&w=1200&q=70" alt="Экскаватор грузит самосвал на стройке" loading="lazy"><span class="tag">Спецтехника</span></div>
+      <div class="veh-t">
+        <h2>Экскаваторы, краны, погрузчики</h2>
+        <ul class="ul">
+          <li>Моточасы под нагрузкой и на холостом</li>
+          <li>Топливо в больших баках, сливы на объекте ночью</li>
+          <li>Геозона «стройка»: не уехала ли техника подработать</li>
+        </ul>
+        <div class="res">До <b>−40%</b> расходов на ГСМ</div>
+        <div class="btns"><a class="btn btn-p" href="#kontakty">Подключить спецтехнику</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec veh" id="selhoz">
+  <div class="wrap">
+    <div class="veh-grid">
+      <div class="veh-ph"><img src="https://images.unsplash.com/photo-1594771804886-a933bb2d609b?auto=format&fit=crop&w=1200&q=70" alt="Трактор в поле" loading="lazy"><span class="tag">Сельхозтехника</span></div>
+      <div class="veh-t">
+        <h2>Тракторы, комбайны, опрыскиватели</h2>
+        <ul class="ul">
+          <li>Обработанные гектары с перекрытиями и пропусками</li>
+          <li>Заправка в поле с заправщика тоже в отчёте</li>
+          <li>Параллельное вождение SunNav AG 500: ровные ряды, экономия семян</li>
+        </ul>
+        <div class="res">Контроль <b>24/7</b> в посевную и уборку</div>
+        <div class="btns"><a class="btn btn-p" href="#kontakty">Подключить сельхозтехнику</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec veh flip" id="karernaya">
+  <div class="wrap">
+    <div class="veh-grid">
+      <div class="veh-ph"><img src="https://images.unsplash.com/photo-1760568787655-247d67618f37?auto=format&fit=crop&w=1200&q=70" alt="Самосвал разгружает породу в карьере" loading="lazy"><span class="tag">Карьерная техника</span></div>
+      <div class="veh-t">
+        <h2>Самосвалы, БелАЗы, карьерные погрузчики</h2>
+        <ul class="ul">
+          <li>Количество рейсов забой–отвал автоматически</li>
+          <li>Датчики под баки 500–1500 литров</li>
+          <li>Моточасы, ожидание погрузки, простои</li>
+        </ul>
+        <div class="res">Кейс: <b>25%+</b> экономии топлива ежемесячно</div>
+        <div class="btns"><a class="btn btn-p" href="#kontakty">Подключить карьерную технику</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec veh" id="toplivozapravshik">
+  <div class="wrap">
+    <div class="veh-grid">
+      <div class="veh-ph"><img src="https://images.unsplash.com/photo-1549909226-2f7fcd960d6e?auto=format&fit=crop&w=1200&q=70" alt="Топливозаправщик на дороге" loading="lazy"><span class="tag">Топливозаправщики</span></div>
+      <div class="veh-t">
+        <h2>Кому, сколько и когда выдали топливо</h2>
+        <ul class="ul">
+          <li>Выдал 180 л, в баке у машины появилось 180 л. Если нет, видно сразу</li>
+          <li>Уровень в цистерне и в баке самого заправщика</li>
+          <li>Маршрут и лишние остановки по дороге</li>
+        </ul>
+        <div class="res">Ничего не «испаряется»</div>
+        <div class="btns"><a class="btn btn-p" href="#kontakty">Подключить заправщик</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec veh flip" id="legkovye">
+  <div class="wrap">
+    <div class="veh-grid">
+      <div class="veh-ph"><img src="https://images.unsplash.com/photo-1587813369290-091c9d432daf?auto=format&fit=crop&w=1200&q=70" alt="Ряд белых служебных фургонов" loading="lazy"><span class="tag">Легковые и служебные</span></div>
+      <div class="veh-t">
+        <h2>Курьеры, торговые представители, служебные авто</h2>
+        <ul class="ul">
+          <li>Без монтажа: терминал в разъём OBD II за 5 минут</li>
+          <li>Рабочие и личные поездки в рабочее время</li>
+          <li>Расход, превышения скорости, стиль вождения</li>
+        </ul>
+        <div class="res">Установка <b>за 5 минут</b></div>
+        <div class="btns"><a class="btn btn-p" href="#kontakty">Подключить легковые</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- КАК ЭТО РАБОТАЕТ -->
+<section class="sec sec-alt" id="montazh" style="margin-top:clamp(30px,5vw,64px)">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">Как это работает</div>
+      <h2>От звонка до первого отчёта за 1–2 дня</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><h3>Выезжаем и ставим</h3><p>Инженер ставит терминал Omnicomm в машину и датчик в бак. Скрытно от водителя, без повреждений.</p><span class="time">2–3 часа на машину</span></div>
+      <div class="step"><h3>Тарируем бак</h3><p>Заливаем топливо порциями и «обучаем» датчик под ваш бак. Поэтому литры в отчёте совпадают с реальностью.</p><span class="time">1–2 часа</span></div>
+      <div class="step"><h3>Вы открываете приложение</h3><p>Настраиваем геозоны, отчёты и уведомления. Показываем, куда смотреть. Дальше поддержка 24/7.</p><span class="time">30 минут обучения</span></div>
+    </div>
+    <div class="cities" style="justify-content:center"><span>Астана</span><span>Алматы</span><span>Кокшетау</span><span>Тараз</span><span>выезд по Казахстану</span></div>
+  </div>
+</section>
+
+<!-- ПЛАТФОРМА -->
+<section class="sec" id="platforma">
+  <div class="wrap split">
+    <div>
+      <div class="eyebrow">Платформа Multitrack · Omnicomm Online</div>
+      <h2>Работает в браузере и на телефоне</h2>
+      <p class="lead">Подключаем и оборудование других производителей, если оно у вас уже стоит.</p>
+      <div class="feat4">
+        <div><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/></svg>Карта и маршруты</div>
+        <div><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/></svg>Отчёты по смене</div>
+        <div><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0v5l2 3H4l2-3zM10 20h4"/></svg>Уведомления</div>
+        <div><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M8 4v6"/></svg>Интеграция с 1С и ERP</div>
+      </div>
+      <div class="btns" style="margin-top:18px"><a class="btn btn-p" href="#kontakty">Показать демо-доступ</a></div>
+    </div>
+    <figure class="ph r43"><img src="https://images.unsplash.com/photo-1634743556192-d19f0c69ff3a?auto=format&fit=crop&w=1000&q=70" alt="GPS-навигатор на панели автомобиля" loading="lazy"></figure>
+  </div>
+</section>
+
+<!-- ОБОРУДОВАНИЕ -->
+<section class="sec sec-alt" id="oborudovanie">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">Оборудование Omnicomm</div>
+      <h2>Пожизненная гарантия на всё железо</h2>
+    </div>
+    <div class="eq">
+      <div class="card"><span class="k">Датчик топлива</span><h3>Omnicomm LLS5</h3><p>5-е поколение с автоподстройкой под бак. Режется под нужную длину.</p><div class="chips"><span class="hi">точность 3%</span><span>любой бак</span></div></div>
+      <div class="card"><span class="k">Терминал</span><h3>Omnicomm Profi / Light</h3><p>GPS и ГЛОНАСС, передача по GSM и Wi-Fi, память на время без связи, CAN-шина.</p><div class="chips"><span class="hi">GPS + ГЛОНАСС</span><span>CAN</span></div></div>
+      <div class="card"><span class="k">Для легковых</span><h3>Omnicomm OBD II</h3><p>В диагностический разъём без монтажа. Пробег и расход с бортового компьютера.</p><div class="chips"><span class="hi">без монтажа</span><span>5 минут</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- КАЛЬКУЛЯТОР -->
+<section class="sec" id="kalkulyator">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">Калькулятор экономии</div>
+      <h2>Сколько вернёте уже в первый год</h2>
+    </div>
+    <div class="calc">
+      <div class="card">
+        <div class="field"><label for="cars">Машин в парке<output id="carsOut" for="cars">10</output></label><input type="range" id="cars" min="1" max="200" value="10"></div>
+        <div class="field"><label for="fuel">Топливо на одну машину в месяц<output id="fuelOut" for="fuel">300 000 ₸</output></label><input type="range" id="fuel" min="50000" max="2000000" step="10000" value="300000"></div>
+        <p class="note">Расход парка в месяц: <b id="totalOut">3 000 000 ₸</b>. Расчёт по нашим внедрениям: экономия ГСМ 20–35%.</p>
+      </div>
+      <div class="out">
+        <div class="big"><small>экономия в месяц</small><b id="mOut">600 000 – 1 050 000 ₸</b><i>при снижении расхода ГСМ на 20–35%</i></div>
+        <div class="big y"><small>экономия в год</small><b id="yOut">7,2 – 12,6 млн ₸</b><i>плюс меньше пробега и затрат на ТО</i></div>
+        <a class="btn btn-p" href="#kontakty" id="calcCta">Получить расчёт для 10 машин</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- КЕЙСЫ -->
+<section class="sec sec-alt" id="keisy">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">Кейсы</div>
+      <h2>Что получили те, кто уже поставил</h2>
+    </div>
+    <div class="cases">
+      <figure class="ph"><img src="https://omnicomm-expert.kz/upload/iblock/195/1959d28db22546095b7b2b107d809ddb.JPG" alt="Спецтехника с установленными датчиками уровня топлива" loading="lazy"></figure>
+      <div class="card case"><span class="k">Карьерная техника</span><div class="num">25%+<small>экономии топлива каждый месяц</small></div><p>Выбрали нас, несмотря на конкурентов с ценой ниже. Экономия пошла с первого месяца.</p></div>
+      <div class="card case"><span class="k">Строительство · Коркем-Сервис Центр</span><div class="num">500 тыс. ₸<small>экономии топлива в месяц</small></div><p>Парк строительной техники оснащён решением Omnicomm без остановки работ.</p></div>
+    </div>
+    <blockquote class="quote">Благодарим ТОО «Контроль Техники» за внедрение GPS-мониторинга, качественный анализ топливных данных и своевременную техническую поддержку. Рекомендуем как компетентного партнёра.<footer>Из официального отзыва клиента</footer></blockquote>
+  </div>
+</section>
+
+<!-- ПОЧЕМУ МЫ -->
+<section class="sec" id="pochemu-my">
+  <div class="wrap why">
+    <div>
+      <div class="eyebrow">Почему «Контроль Техники»</div>
+      <h2>Официальный дилер Omnicomm с 2016 года</h2>
+      <div class="why-list">
+        <div><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg><div><b>Пожизненная гарантия</b><span>на оборудование Omnicomm, прямая от производителя</span></div></div>
+        <div><svg viewBox="0 0 24 24"><path d="M14 4a4 4 0 0 0-4 6l-6 6 2 2 6-6a4 4 0 0 0 6-4l-2 2-2-2 2-2z"/></svg><div><b>Сертифицированные инженеры</b><span>монтаж и тарировка по регламенту производителя</span></div></div>
+        <div><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><b>Поддержка 24/7</b><span>разбираем спорные сливы, помогаем читать отчёты</span></div></div>
+        <div><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 12h10M7 8h6M7 16h8"/></svg><div><b>1С, ERP, топливные карты</b><span>данные уходят туда, где вы считаете деньги</span></div></div>
+      </div>
+      <div class="badge"><i></i>СЕРЕБРЯНЫЙ ДИЛЕР OMNICOMM · КАЗАХСТАН</div>
+    </div>
+    <figure class="ph r43"><img src="https://omnicomm-expert.kz/upload/iblock/8d3/8d3f433dd6279eb8efa0f847a148f912.JPG" alt="Круглосуточная поддержка систем Omnicomm" loading="lazy"></figure>
+  </div>
+</section>
+
+<!-- КОНТАКТЫ -->
+<section class="sec sec-alt" id="kontakty">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Заявка</div>
+      <h2>Расскажите про парк. Расчёт за день</h2>
+    </div>
+    <div class="contact-grid">
+      <form class="form card" id="lead" novalidate>
+        <div class="f"><label for="name">Имя</label><input id="name" name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться"></div>
+        <div class="f"><label for="phone">Телефон *</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___ __ __" required></div>
+        <div class="f"><label for="fleet">Сколько техники</label>
+          <select id="fleet" name="fleet"><option>1–5 единиц</option><option selected>5–20 единиц</option><option>20–50 единиц</option><option>50–100 единиц</option><option>Больше 100</option></select>
+        </div>
+        <div class="f"><label for="msg">Что за техника</label><textarea id="msg" name="msg" placeholder="Например: 12 КамАЗов и 3 экскаватора"></textarea></div>
+        <button class="btn btn-p" type="submit">Отправить заявку в WhatsApp</button>
+        <div class="ok-msg" id="okMsg">Открылся WhatsApp с вашей заявкой, нажмите «Отправить». Если не открылся, напишите на +7 777 870 3080.</div>
+        <p class="note" style="margin-top:0">Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</p>
+      </form>
+      <div class="cts">
+        <div class="ct"><small>WhatsApp и мобильный</small><a href="tel:+77778703080">+7 777 870 3080</a><span>отвечаем в рабочее время за 10 минут</span></div>
+        <div class="ct"><small>Офис · продажи и поддержка</small><a href="tel:+77172972109">+7 7172 97 21 09</a><span>вн. 1 продажи · вн. 2 техподдержка</span></div>
+        <div class="ct"><small>Почта</small><a href="mailto:sales@multitrack.kz">sales@multitrack.kz</a><span>support@multitrack.kz для клиентов</span></div>
+        <div class="ct"><small>Адрес</small><a href="https://2gis.kz/astana/search/%D0%A8%D1%8B%D0%B3%D0%B0%D0%BD%D0%B0%D0%BA%201" target="_blank" rel="noopener">Астана, ул. Шыганак 1, н.п. 1</a><span>Пн–Пт 9:00–18:00 · поддержка 24/7</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap ft">
+    <div><b style="color:var(--ink);font-family:var(--display);font-size:13px;letter-spacing:.04em;text-transform:uppercase">Контроль Техники</b><br>ТОО «Контроль Техники» · официальный дилер Omnicomm в Казахстане · GPS-мониторинг и контроль топлива</div>
+    <div class="soc">
+      <a href="https://www.instagram.com/kontrol.expert/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/kontrol.expert" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.linkedin.com/company/kontrol.expert/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.youtube.com/user/OmnicommMoscow" target="_blank" rel="noopener">YouTube</a>
+    </div>
+    <div>© 2016–<span id="year">2026</span>, Контроль Техники · multitrack.kz</div>
+  </div>
+</footer>
+
+<div class="bar">
+  <a class="btn btn-p" href="#kontakty">Рассчитать стоимость</a>
+  <a class="btn btn-wa" href="https://wa.me/77778703080?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20GPS-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" style="width:26px;height:26px"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2m0 1.67c4.54 0 8.24 3.7 8.24 8.24s-3.7 8.24-8.24 8.24c-1.5 0-2.97-.41-4.25-1.18l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.35c0-4.54 3.7-8.24 8.3-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.14.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01"/></svg></a>
+</div>
+
+<script>
+(function(){
+  var $=function(s,c){return (c||document).querySelector(s)}, $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+
+  /* меню */
+  var nav=$('#nav'), burger=$('#burger');
+  function toggleNav(o){ nav.classList.toggle('open',o); burger.setAttribute('aria-expanded',o?'true':'false'); burger.setAttribute('aria-label',o?'Закрыть меню':'Открыть меню'); document.body.style.overflow=o?'hidden':'';
+    burger.innerHTML=o?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>' }
+  burger.addEventListener('click',function(){toggleNav(!nav.classList.contains('open'))});
+  $$('a',nav).forEach(function(a){a.addEventListener('click',function(){toggleNav(false)})});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')toggleNav(false)});
+
+  /* калькулятор */
+  var cars=$('#cars'), fuel=$('#fuel'), carsOut=$('#carsOut'), fuelOut=$('#fuelOut'), totalOut=$('#totalOut'), mOut=$('#mOut'), yOut=$('#yOut'), cta=$('#calcCta');
+  function fmt(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')}
+  function mln(n){return (n/1e6).toFixed(1).replace('.',',')+' млн'}
+  function plural(n,f){var a=Math.abs(n)%100,b=a%10; if(a>10&&a<20)return f[2]; if(b>1&&b<5)return f[1]; if(b===1)return f[0]; return f[2]}
+  function calc(){
+    var n=+cars.value, per=+fuel.value, f=n*per, lo=f*0.2, hi=f*0.35;
+    carsOut.textContent=n; fuelOut.textContent=fmt(per)+' ₸'; totalOut.textContent=fmt(f)+' ₸';
+    mOut.textContent=fmt(lo)+' – '+fmt(hi)+' ₸';
+    yOut.textContent=(lo*12>=1e6?mln(lo*12):fmt(lo*12))+' – '+(hi*12>=1e6?mln(hi*12):fmt(hi*12))+' ₸';
+    cta.textContent='Получить расчёт для '+n+' '+plural(n,['машины','машин','машин']);
+  }
+  cars.addEventListener('input',calc); fuel.addEventListener('input',calc); calc();
+
+  /* форма → WhatsApp */
+  $('#lead').addEventListener('submit',function(e){
+    e.preventDefault();
+    var ph=$('#phone'); if(ph.value.replace(/\D/g,'').length<10){ ph.focus(); ph.style.borderColor='var(--red)'; return }
+    var txt='Здравствуйте! Заявка с сайта multitrack.kz\nИмя: '+($('#name').value||'—')+'\nТелефон: '+ph.value+'\nТехника: '+$('#fleet').value+'\nЗадача: '+($('#msg').value||'—');
+    var url='https://wa.me/77778703080?text='+encodeURIComponent(txt);
+    $('#okMsg').classList.add('show');
+    var w=window.open(url,'_blank'); if(!w) location.href=url;
+  });
+
+  /* нижняя панель появляется после первого экрана */
+  var bar=document.querySelector('.bar'), hero=$('#start');
+  function barCheck(){ bar.classList.toggle('show', window.scrollY > hero.offsetTop + hero.offsetHeight*0.6) }
+  window.addEventListener('scroll',barCheck,{passive:true}); barCheck();
+
+  $('#year').textContent=new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
