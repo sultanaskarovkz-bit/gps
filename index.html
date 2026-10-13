@@ -280,62 +280,39 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
 .bar .btn-wa{width:54px;padding:0}
 @media (min-width:900px){.bar{display:none}}
 
-/* ===== движение ===== */
+/* ===== движение: один спокойный эффект ===== */
 .hdr{transition:box-shadow .3s}
-.hdr.scrolled{box-shadow:0 8px 28px -14px rgba(11,27,51,.35)}
-.prog{position:absolute;left:0;bottom:-1px;height:3px;width:0;background:linear-gradient(90deg,var(--blue),#6C9BFF);border-radius:0 3px 3px 0;transition:width .12s linear}
-@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-@keyframes photoIn{from{opacity:0;transform:scale(1.1)}to{opacity:1;transform:scale(1.04)}}
-@keyframes pinDrop{0%{opacity:0;transform:translate(-50%,-260%) rotate(-45deg)}55%{opacity:1;transform:translate(-50%,-88%) rotate(-45deg)}75%{transform:translate(-50%,-108%) rotate(-45deg)}100%{opacity:1;transform:translate(-50%,-100%) rotate(-45deg)}}
-@keyframes ring{0%{transform:translate(-50%,-50%) scale(.4);opacity:.8}100%{transform:translate(-50%,-50%) scale(2.4);opacity:0}}
+.hdr.scrolled{box-shadow:0 8px 28px -14px rgba(11,27,51,.3)}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pinDrop{from{opacity:0;transform:translate(-50%,-160%) rotate(-45deg)}to{opacity:1;transform:translate(-50%,-100%) rotate(-45deg)}}
+@keyframes ring{0%{transform:translate(-50%,-50%) scale(.5);opacity:.6}100%{transform:translate(-50%,-50%) scale(2.2);opacity:0}}
 @keyframes draw{to{stroke-dashoffset:0}}
-@keyframes dashMove{to{stroke-dashoffset:-20}}
-@keyframes glow{0%,100%{box-shadow:0 10px 24px -10px rgba(255,107,26,.7)}50%{box-shadow:0 14px 34px -8px rgba(255,107,26,.95)}}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
-.js .hero-top .eyebrow{animation:up .6s .05s both}
-.js .hero-top h1 .w{display:inline-block;opacity:0;transform:translateY(110%);animation:up .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(.15s + var(--i) * 60ms)}
-.js .hero-top .plain{animation:up .7s .55s both}
-.js .hero-bottom .btns{animation:up .7s .7s both}
-.js .hero-ph .ph{overflow:hidden}
-.js .hero-ph .ph img{animation:photoIn 1.4s cubic-bezier(.2,.7,.2,1) both;will-change:transform}
-.js .pin{animation:pinDrop .9s cubic-bezier(.3,1.4,.4,1) .9s both}
+/* первый экран: одна последовательность при загрузке */
+.js .hero-top{animation:up .7s ease-out both}
+.js .hero-bottom{animation:up .7s .15s ease-out both}
+.js .hero-ph .ph{animation:fade .9s .1s ease-out both}
+.js .pin{animation:pinDrop .5s cubic-bezier(.2,.7,.2,1) 1.6s both}
 .pin-ring{position:absolute;top:36%;left:50%;width:34px;height:34px;border-radius:50%;border:2px solid var(--blue);opacity:0;pointer-events:none}
-.js .pin-ring{animation:ring 2s ease-out 1.8s infinite}
+.js .pin-ring{animation:ring 2.4s ease-out 2.2s infinite}
 .route{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .route .rl{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;opacity:.9;vector-effect:non-scaling-stroke}
 .route .rb{fill:none;stroke:var(--blue);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.js .route .rl,.js .route .rb{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.5s cubic-bezier(.4,0,.2,1) .5s forwards}
-.route .rd{fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:6 8;opacity:0;vector-effect:non-scaling-stroke;transition:opacity .5s}
-.js .route.on .rd{opacity:.9;animation:dashMove .9s linear infinite}
-.js .live{animation:up .7s 1.3s both}
-.live .dot{animation:blink 1.4s infinite}
-.js .hero .btn-p,.js .bar .btn-p{animation:glow 2.6s ease-in-out infinite}
-.js .rv{opacity:0;transform:translateY(26px);transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i,0) * 90ms)}
-.js .rv-l{transform:translateX(-28px)}
-.js .rv-r{transform:translateX(28px)}
-.js .rv-s{transform:scale(.96) translateY(14px)}
+.js .route .rl,.js .route .rb{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.2s ease-in-out .6s forwards}
+.route .rd{display:none}
+.js .live{animation:up .6s 1.9s ease-out both}
+/* появление при прокрутке */
+.js .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease-out,transform .6s ease-out;transition-delay:var(--d,0ms)}
 .js .rv.in{opacity:1;transform:none}
-.js .eyebrow::before{width:0;transition:width .6s .2s cubic-bezier(.2,.7,.2,1)}
-.js .in .eyebrow::before,.js .hero .eyebrow::before{width:18px}
-.js .rv .ul li{opacity:0;transform:translateX(-12px);transition:opacity .5s,transform .5s;transition-delay:calc(.25s + var(--i,0) * 80ms)}
-.js .rv.in .ul li{opacity:1;transform:none}
-.js .rv .step::before{transform:scale(.4);opacity:0;transition:transform .5s cubic-bezier(.3,1.4,.4,1) .3s,opacity .3s .3s}
-.js .rv.in .step::before{transform:none;opacity:1}
-.veh-ph img,.split .ph img,.cases .ph img,.why .ph img{transform:scale(1.12);will-change:transform;transition:none}
-.three .ph img{transition:transform .7s cubic-bezier(.2,.7,.2,1)}
-.three .card:hover .ph img{transform:scale(1.05)}
-.card,.trust div,.feat4 div,.why-list div,.eq .card{transition:transform .3s,box-shadow .3s}
-.three .card:hover,.eq .card:hover,.feat4 div:hover,.why-list div:hover{transform:translateY(-4px);box-shadow:0 18px 40px -22px rgba(11,27,51,.35)}
-.btn{transition:transform .2s,background .2s,box-shadow .2s}
-.btn:hover{transform:translateY(-2px)}
+.js .rv .ph img,.js .rv .veh-ph img{opacity:0;transform:scale(1.04);transition:opacity .8s ease-out,transform 1.2s ease-out;transition-delay:var(--d,0ms)}
+.js .rv.in .ph img,.js .rv.in .veh-ph img{opacity:1;transform:none}
+.three .ph img{transition:transform .5s ease-out}
+.btn{transition:background .15s,transform .15s}
+.btn:hover{transform:translateY(-1px)}
 .btn:active{transform:translateY(1px)}
-.big{transition:transform .25s}
-.big.pop{transform:scale(1.03)}
-.nav.open a{animation:up .45s both;animation-delay:calc(var(--i,0) * 28ms)}
 @media (prefers-reduced-motion:reduce){
-  .js .rv,.js .rv .ul li,.js .rv .step::before,.js .hero-top h1 .w,.js .route .rl,.js .route .rb{opacity:1;transform:none;stroke-dashoffset:0;animation:none;transition:none}
-  .js .pin,.js .live,.js .hero-ph .ph img,.js .pin-ring,.js .hero .btn-p,.js .bar .btn-p{animation:none;opacity:1}
-  .veh-ph img,.split .ph img,.cases .ph img,.why .ph img{transform:none}
+  .js .rv,.js .rv .ph img,.js .rv .veh-ph img,.js .route .rl,.js .route .rb{opacity:1;transform:none;stroke-dashoffset:0;animation:none;transition:none}
+  .js .hero-top,.js .hero-bottom,.js .hero-ph .ph,.js .pin,.js .live,.js .pin-ring{animation:none;opacity:1}
 }
 </style>
 </head>
@@ -356,7 +333,6 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
       </button>
     </div>
   </div>
-  <div class="prog" id="prog" aria-hidden="true"></div>
 </header>
 
 <nav class="nav" id="nav" aria-label="Разделы сайта">
@@ -454,8 +430,8 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
 <!-- КОНТРОЛЬ ТОПЛИВА -->
 <section class="sec" id="kontrol-topliva">
   <div class="wrap split">
-    <figure class="ph r43 rv rv-l"><img src="https://images.unsplash.com/photo-1453509337612-46f7e5e7f6b3?auto=format&fit=crop&w=1000&q=70" alt="Топливозаправочный кран" loading="lazy"></figure>
-    <div class="rv rv-r">
+    <figure class="ph r43 rv"><img src="https://images.unsplash.com/photo-1453509337612-46f7e5e7f6b3?auto=format&fit=crop&w=1000&q=70" alt="Топливозаправочный кран" loading="lazy"></figure>
+    <div class="rv">
       <div class="eyebrow">Контроль топлива</div>
       <h2>Датчик в баке. Сливы заканчиваются в первую неделю</h2>
       <ul class="ul">
@@ -473,7 +449,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
 <!-- ТЕХНИКА -->
 <section class="sec veh" id="gruzovye">
   <div class="wrap">
-    <div class="veh-grid rv rv-s">
+    <div class="veh-grid rv">
       <div class="veh-ph"><img src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=1200&q=70" alt="Ряд грузовиков на стоянке" loading="lazy"><span class="tag">Грузовой транспорт</span></div>
       <div class="veh-t">
         <h2>Фуры, КамАЗы, доставка</h2>
@@ -491,7 +467,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
 
 <section class="sec veh flip" id="spectehnika">
   <div class="wrap">
-    <div class="veh-grid rv rv-s">
+    <div class="veh-grid rv">
       <div class="veh-ph"><img src="https://images.unsplash.com/photo-1575281923032-f40d94ef6160?auto=format&fit=crop&w=1200&q=70" alt="Экскаватор грузит самосвал на стройке" loading="lazy"><span class="tag">Спецтехника</span></div>
       <div class="veh-t">
         <h2>Экскаваторы, краны, погрузчики</h2>
@@ -509,7 +485,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
 
 <section class="sec veh" id="selhoz">
   <div class="wrap">
-    <div class="veh-grid rv rv-s">
+    <div class="veh-grid rv">
       <div class="veh-ph"><img src="https://images.unsplash.com/photo-1594771804886-a933bb2d609b?auto=format&fit=crop&w=1200&q=70" alt="Трактор в поле" loading="lazy"><span class="tag">Сельхозтехника</span></div>
       <div class="veh-t">
         <h2>Тракторы, комбайны, опрыскиватели</h2>
@@ -527,7 +503,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
 
 <section class="sec veh flip" id="karernaya">
   <div class="wrap">
-    <div class="veh-grid rv rv-s">
+    <div class="veh-grid rv">
       <div class="veh-ph"><img src="https://images.unsplash.com/photo-1760568787655-247d67618f37?auto=format&fit=crop&w=1200&q=70" alt="Самосвал разгружает породу в карьере" loading="lazy"><span class="tag">Карьерная техника</span></div>
       <div class="veh-t">
         <h2>Самосвалы, БелАЗы, карьерные погрузчики</h2>
@@ -545,7 +521,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
 
 <section class="sec veh" id="toplivozapravshik">
   <div class="wrap">
-    <div class="veh-grid rv rv-s">
+    <div class="veh-grid rv">
       <div class="veh-ph"><img src="https://images.unsplash.com/photo-1549909226-2f7fcd960d6e?auto=format&fit=crop&w=1200&q=70" alt="Топливозаправщик на дороге" loading="lazy"><span class="tag">Топливозаправщики</span></div>
       <div class="veh-t">
         <h2>Кому, сколько и когда выдали топливо</h2>
@@ -563,7 +539,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
 
 <section class="sec veh flip" id="legkovye">
   <div class="wrap">
-    <div class="veh-grid rv rv-s">
+    <div class="veh-grid rv">
       <div class="veh-ph"><img src="https://images.unsplash.com/photo-1587813369290-091c9d432daf?auto=format&fit=crop&w=1200&q=70" alt="Ряд белых служебных фургонов" loading="lazy"><span class="tag">Легковые и служебные</span></div>
       <div class="veh-t">
         <h2>Курьеры, торговые представители, служебные авто</h2>
@@ -598,7 +574,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
 <!-- ПЛАТФОРМА -->
 <section class="sec" id="platforma">
   <div class="wrap split">
-    <div class="rv rv-l">
+    <div class="rv">
       <div class="eyebrow">Платформа Multitrack · Omnicomm Online</div>
       <h2>Работает в браузере и на телефоне</h2>
       <p class="lead">Подключаем и оборудование других производителей, если оно у вас уже стоит.</p>
@@ -610,7 +586,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
       </div>
       <div class="btns" style="margin-top:18px"><a class="btn btn-p" href="#kontakty">Показать демо-доступ</a></div>
     </div>
-    <figure class="ph r43 rv rv-r"><img src="https://images.unsplash.com/photo-1634743556192-d19f0c69ff3a?auto=format&fit=crop&w=1000&q=70" alt="GPS-навигатор на панели автомобиля" loading="lazy"></figure>
+    <figure class="ph r43 rv"><img src="https://images.unsplash.com/photo-1634743556192-d19f0c69ff3a?auto=format&fit=crop&w=1000&q=70" alt="GPS-навигатор на панели автомобиля" loading="lazy"></figure>
   </div>
 </section>
 
@@ -637,7 +613,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
       <h2>Сколько вернёте уже в первый год</h2>
     </div>
     <div class="calc">
-      <div class="card rv rv-l">
+      <div class="card rv">
         <div class="field"><label for="cars">Машин в парке<output id="carsOut" for="cars">10</output></label><input type="range" id="cars" min="1" max="200" value="10"></div>
         <div class="field"><label for="fuel">Топливо на одну машину в месяц<output id="fuelOut" for="fuel">300 000 ₸</output></label><input type="range" id="fuel" min="50000" max="2000000" step="10000" value="300000"></div>
         <p class="note">Расход парка в месяц: <b id="totalOut">3 000 000 ₸</b>. Расчёт по нашим внедрениям: экономия ГСМ 20–35%.</p>
@@ -659,7 +635,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
       <h2>Что получили те, кто уже поставил</h2>
     </div>
     <div class="cases">
-      <figure class="ph rv rv-l"><img src="https://omnicomm-expert.kz/upload/iblock/195/1959d28db22546095b7b2b107d809ddb.JPG" alt="Спецтехника с установленными датчиками уровня топлива" loading="lazy"></figure>
+      <figure class="ph rv"><img src="https://omnicomm-expert.kz/upload/iblock/195/1959d28db22546095b7b2b107d809ddb.JPG" alt="Спецтехника с установленными датчиками уровня топлива" loading="lazy"></figure>
       <div class="card case rv"><span class="k">Карьерная техника</span><div class="num">25%+<small>экономии топлива каждый месяц</small></div><p>Выбрали нас, несмотря на конкурентов с ценой ниже. Экономия пошла с первого месяца.</p></div>
       <div class="card case rv"><span class="k">Строительство · Коркем-Сервис Центр</span><div class="num">500 тыс. ₸<small>экономии топлива в месяц</small></div><p>Парк строительной техники оснащён решением Omnicomm без остановки работ.</p></div>
     </div>
@@ -670,7 +646,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
 <!-- ПОЧЕМУ МЫ -->
 <section class="sec" id="pochemu-my">
   <div class="wrap why">
-    <div class="rv rv-l">
+    <div class="rv">
       <div class="eyebrow">Почему «Контроль Техники»</div>
       <h2>Официальный дилер Omnicomm с 2016 года</h2>
       <div class="why-list">
@@ -681,7 +657,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
       </div>
       <div class="badge"><i></i>СЕРЕБРЯНЫЙ ДИЛЕР OMNICOMM · КАЗАХСТАН</div>
     </div>
-    <figure class="ph r43 rv rv-r"><img src="https://omnicomm-expert.kz/upload/iblock/8d3/8d3f433dd6279eb8efa0f847a148f912.JPG" alt="Круглосуточная поддержка систем Omnicomm" loading="lazy"></figure>
+    <figure class="ph r43 rv"><img src="https://omnicomm-expert.kz/upload/iblock/8d3/8d3f433dd6279eb8efa0f847a148f912.JPG" alt="Круглосуточная поддержка систем Omnicomm" loading="lazy"></figure>
   </div>
 </section>
 
@@ -693,7 +669,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
       <h2>Расскажите про парк. Расчёт за день</h2>
     </div>
     <div class="contact-grid">
-      <form class="form card rv rv-l" id="lead" novalidate>
+      <form class="form card rv" id="lead" novalidate>
         <div class="f"><label for="name">Имя</label><input id="name" name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться"></div>
         <div class="f"><label for="phone">Телефон *</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___ __ __" required></div>
         <div class="f"><label for="fleet">Сколько техники</label>
@@ -762,7 +738,6 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
     cta.textContent='Получить расчёт для '+n+' '+plural(n,['машины','машин','машин']);
     var from={lo:cur.lo,hi:cur.hi}, t0=null; cur={lo:lo,hi:hi};
     if(tw) cancelAnimationFrame(tw);
-    $$('.big').forEach(function(b){ b.classList.add('pop'); setTimeout(function(){ b.classList.remove('pop') },250) });
     (function st(ts){ if(!t0) t0=ts; var k=Math.min(1,(ts-t0)/350); k=1-Math.pow(1-k,2); render(from.lo+(lo-from.lo)*k, from.hi+(hi-from.hi)*k); if(k<1) tw=requestAnimationFrame(st) })(performance.now());
   }
   cars.addEventListener('input',calc); fuel.addEventListener('input',calc); calc();
@@ -782,46 +757,23 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   document.documentElement.classList.add('js');
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* заголовок по словам */
-  var h1=$('.hero-top h1');
-  if(h1){ var idx=0, html='';
-    h1.childNodes.forEach(function(n){
-      var words=n.textContent.split(' ').filter(Boolean).map(function(w){return '<span class="w" style="--i:'+(idx++)+'">'+w+'</span>'}).join(' ');
-      html += n.nodeType===1 ? '<span class="acc">'+words+'</span>' : words;
-      html += ' ';
-    });
-    h1.innerHTML=html.trim();
-  }
-  setTimeout(function(){ var r=$('#route'); if(r) r.classList.add('on') }, 2100);
-
-  /* индексы для каскада */
-  $$('.rv').forEach(function(el){ if(!el.style.getPropertyValue('--i')){ var i=0, sib=el.previousElementSibling; while(sib){ if(sib.classList.contains('rv')) i++; sib=sib.previousElementSibling } el.style.setProperty('--i', i) } });
-  $$('.ul').forEach(function(ul){ $$('li',ul).forEach(function(li,i){ li.style.setProperty('--i', i) }) });
-  $$('a',nav).forEach(function(a,i){ a.style.setProperty('--i', i) });
+  /* небольшая задержка внутри группы соседних блоков, не больше 240 мс */
+  $$('.rv').forEach(function(el){ var i=0, sib=el.previousElementSibling; while(sib && sib.classList.contains('rv')){ i++; sib=sib.previousElementSibling } el.style.setProperty('--d', Math.min(i,4)*60+'ms') });
 
   /* появление при прокрутке */
-  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target) } }) },{rootMargin:'0px 0px -4% 0px',threshold:0.06});
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target) } }) },{rootMargin:'0px 0px -6% 0px',threshold:0.12});
   $$('.rv').forEach(function(el){ io.observe(el) });
 
   /* счётчики */
   var cio=new IntersectionObserver(function(es){ es.forEach(function(e){ if(!e.isIntersecting) return; var el=e.target, to=+el.dataset.to, t0=null; cio.unobserve(el);
     if(reduce){ el.textContent=to; return }
-    (function st(ts){ if(!t0) t0=ts; var k=Math.min(1,(ts-t0)/1300); k=1-Math.pow(1-k,3); el.textContent=Math.round(to*k); if(k<1) requestAnimationFrame(st) })(performance.now());
+    (function st(ts){ if(!t0) t0=ts; var k=Math.min(1,(ts-t0)/1000); k=1-Math.pow(1-k,3); el.textContent=Math.round(to*k); if(k<1) requestAnimationFrame(st) })(performance.now());
   }) },{threshold:0.6});
   $$('.cnt').forEach(function(el){ cio.observe(el) });
 
-  /* параллакс фото, прогресс и тень шапки */
-  var par=$$('.veh-ph img, .split .ph img, .cases .ph img, .why .ph img'), hdr=$('.hdr'), prog=$('#prog'), ticking=false;
-  function frame(){
-    ticking=false;
-    var vh=window.innerHeight, max=document.documentElement.scrollHeight-vh;
-    prog.style.width=(max>0?Math.min(100,window.scrollY/max*100):0)+'%';
-    hdr.classList.toggle('scrolled', window.scrollY>8);
-    if(reduce) return;
-    par.forEach(function(img){ var r=img.parentElement.getBoundingClientRect(); if(r.bottom<0||r.top>vh) return; var k=(r.top+r.height/2-vh/2)/vh; img.style.transform='scale(1.12) translateY('+(k*-26).toFixed(1)+'px)' });
-  }
-  window.addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(frame) } },{passive:true});
-  window.addEventListener('resize',frame,{passive:true}); frame();
+  /* тень шапки */
+  var hdr=$('.hdr');
+  window.addEventListener('scroll',function(){ hdr.classList.toggle('scrolled', window.scrollY>8) },{passive:true});
 
   /* нижняя панель появляется после первого экрана */
   var bar=document.querySelector('.bar'), hero=$('#start');
