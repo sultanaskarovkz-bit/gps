@@ -14,7 +14,7 @@
 <meta property="og:description" content="Где машина, сколько топлива и кто слил. Официальный дилер Omnicomm. Установка за 1 день, поддержка 24/7.">
 <meta property="og:url" content="https://multitrack.kz/">
 <meta property="og:image" content="https://images.unsplash.com/photo-1708193203896-ba0630862bb6?auto=format&fit=crop&w=1200&h=630&q=70">
-<meta name="theme-color" content="#0B1B33">
+<meta name="theme-color" content="#F3F5F9">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B1B33'/%3E%3Cpath d='M32 10c-9 0-16 7-16 16 0 12 16 28 16 28s16-16 16-28c0-9-7-16-16-16z' fill='%231557FF'/%3E%3Ccircle cx='32' cy='26' r='6' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,14 +35,16 @@
 }
 </script>
 <style>
-/* Светлая «витрина»: белые карточки на холодном сером, крупные фото, один оранжевый цвет только для кнопок продажи, синий для всего, что про GPS. */
+/* Светлая витрина. Всё движение привязано к прокрутке: грузовик едет по маршруту, телефон
+   переключает экраны, график топлива рисуется, карточки техники складываются стопкой. */
 :root{
   --bg:#F3F5F9; --surface:#FFFFFF; --ink:#0B1B33; --muted:#5B6B82; --line:#DCE3ED; --line-2:#C5CFDD;
   --blue:#1557FF; --blue-soft:#E8EEFF; --orange:#FF6B1A; --orange-dark:#E85A0C; --green:#12A66A; --green-soft:#E4F7EE; --red:#E5484D;
   --display:'Unbounded',system-ui,-apple-system,sans-serif;
   --body:'Onest',system-ui,-apple-system,'Segoe UI',sans-serif;
   --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
-  --gutter:clamp(16px,4vw,32px); --maxw:1120px; --header:64px; --r:14px;
+  --gutter:clamp(16px,4vw,32px); --maxw:1120px; --header:64px; --r:16px;
+  --top:calc(var(--header) + env(safe-area-inset-top,0px));
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -61,10 +63,10 @@ p{margin:0}
 .skip{position:absolute;left:-999px;top:8px;background:var(--orange);color:#fff;padding:8px 12px;z-index:100}
 .skip:focus{left:8px}
 :focus-visible{outline:3px solid var(--blue);outline-offset:3px}
-@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;scroll-behavior:auto!important}}
 
 /* шапка */
-.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);transition:box-shadow .3s}
+.hdr.scrolled{box-shadow:0 8px 28px -14px rgba(11,27,51,.3)}
 .hdr-in{height:var(--header);display:flex;align-items:center;justify-content:space-between;gap:12px;padding-inline:var(--gutter);max-width:var(--maxw);margin:0 auto}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
 .logo-mark{width:36px;height:36px;flex:none}
@@ -78,7 +80,7 @@ p{margin:0}
 @media (min-width:900px){.hdr .hdr-cta{display:inline-flex}}
 .ic-btn{width:44px;height:44px;border:1px solid var(--line-2);background:#fff;border-radius:10px;display:grid;place-items:center;cursor:pointer;padding:0}
 .ic-btn svg{width:22px;height:22px}
-.nav{position:fixed;inset:0;z-index:45;background:rgba(255,255,255,.98);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .25s,transform .25s,visibility 0s .25s;overflow:auto;padding:calc(var(--header) + env(safe-area-inset-top,0px) + 10px) var(--gutter) 100px}
+.nav{position:fixed;inset:0;z-index:45;background:rgba(255,255,255,.98);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .25s,transform .25s,visibility 0s .25s;overflow:auto;padding:calc(var(--top) + 10px) var(--gutter) 100px}
 .nav.open{opacity:1;visibility:visible;transform:none;transition:opacity .25s,transform .25s}
 .nav-in{max-width:720px;margin:0 auto}
 .nav h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin:22px 0 6px;font-weight:700}
@@ -87,7 +89,8 @@ p{margin:0}
 .nav a.sub::before{content:"→ ";color:var(--blue)}
 
 /* кнопки */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-family:var(--body);font-weight:700;font-size:16px;padding:0 22px;min-height:54px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:transform .15s,background .15s,box-shadow .15s;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-family:var(--body);font-weight:700;font-size:16px;padding:0 22px;min-height:54px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:transform .15s,background .15s;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
 .btn:active{transform:translateY(1px)}
 .btn-p{background:var(--orange);color:#fff;box-shadow:0 10px 24px -10px rgba(255,107,26,.7)}
 .btn-p:hover{background:var(--orange-dark)}
@@ -101,10 +104,10 @@ p{margin:0}
 .btns .btn{flex:1 1 200px}
 
 /* секции */
-.sec{padding-block:clamp(44px,8vw,88px);scroll-margin-top:calc(var(--header) + 8px)}
-.sec-alt{background:var(--surface);border-block:1px solid var(--line)}
+.sec{padding-block:clamp(44px,8vw,88px);scroll-margin-top:calc(var(--top) + 8px);position:relative}
+.sheet{background:var(--surface);border-radius:28px 28px 0 0;margin-top:-28px;z-index:10;box-shadow:0 -16px 40px -30px rgba(11,27,51,.35);padding-top:calc(clamp(44px,8vw,88px) + 16px)}
 .wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gutter)}
-.hero-grid,.three,.split,.steps,.eq,.calc,.out,.cases,.why,.why-list,.contact-grid,.cts,.veh-grid,.form{grid-template-columns:minmax(0,1fr)}
+.hero-grid,.three,.split,.eq,.calc,.out,.cases,.why,.why-list,.contact-grid,.cts,.form,.stack,.vcard,.stage-in{grid-template-columns:minmax(0,1fr)}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:12px}
 .eyebrow::before{content:"";width:18px;height:3px;border-radius:2px;background:var(--blue)}
 .lead{font-size:clamp(16px,4.2vw,19px);color:var(--muted);margin-top:12px;max-width:62ch}
@@ -118,36 +121,75 @@ p{margin:0}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
 .tag{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:6px 10px;border-radius:999px;background:var(--blue-soft);color:var(--blue)}
 .tag.g{background:var(--green-soft);color:var(--green)}
+.ul{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.ul li{display:flex;gap:10px;align-items:flex-start;font-size:15.5px;line-height:1.4}
+.ul li::before{content:"";flex:none;width:20px;height:20px;border-radius:50%;background:var(--green-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2312A66A' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 10.5l3.2 3L15 7'/%3E%3C/svg%3E") center/14px no-repeat;margin-top:1px}
+.ul li b{font-weight:600}
+.res{margin-top:14px;display:inline-block;padding:9px 12px;border-radius:10px;background:var(--green-soft);color:#0B7A4E;font-weight:600;font-size:14px;line-height:1.4}
+.res b{font-family:var(--display);font-weight:700;font-size:16px;padding-inline:2px}
 
-/* hero */
+/* ===== первый экран ===== */
 .hero{padding-block:clamp(28px,6vw,64px) clamp(28px,6vw,56px)}
 .hero-grid{display:grid;gap:20px;grid-template-areas:"top" "ph" "bottom"}
 .hero-top{grid-area:top}.hero-ph{grid-area:ph}.hero-bottom{grid-area:bottom}
 @media (min-width:900px){.hero-grid{grid-template-columns:1fr 1fr;grid-template-areas:"top ph" "bottom ph";gap:12px 40px;align-items:center}.hero-top{align-self:end}.hero-bottom{align-self:start}}
 .hero h1 .acc{color:var(--blue)}
-.plain{margin-top:16px;font-size:clamp(17px,4.6vw,21px);line-height:1.45;color:var(--ink);max-width:34ch}
+.plain{margin-top:16px;font-size:clamp(17px,4.6vw,21px);line-height:1.45;max-width:34ch}
 .plain b{font-weight:700;background:linear-gradient(transparent 60%,#FFE1C9 60%)}
-.hero .btns{margin-top:0}
 .trust{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
 @media (min-width:560px){.trust{grid-template-columns:repeat(4,1fr)}}
-.trust div{padding:12px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
-.trust b{display:block;font-family:var(--display);font-weight:700;font-size:clamp(18px,5vw,24px);color:var(--ink);line-height:1.1}
+.trust > div{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.trust b{display:block;font-family:var(--display);font-weight:700;font-size:clamp(18px,5vw,24px);line-height:1.1}
+.trust b span{font:inherit}
 .trust > div > span{display:block;font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.3}
-.trust b span{display:inline;font:inherit;color:inherit;margin:0}
 .hero-ph{position:relative}
 .hero-ph .ph{aspect-ratio:4/3}
 @media (min-width:900px){.hero-ph .ph{aspect-ratio:5/5.4}}
+.route{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.route .rl{fill:none;stroke:#fff;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;opacity:.95;vector-effect:non-scaling-stroke}
+.route .rb{fill:none;stroke:var(--blue);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.route .pin{fill:var(--blue);stroke:#fff;stroke-width:.7;transform-box:fill-box;transform-origin:50% 100%}
+.route .ring{fill:none;stroke:var(--blue);stroke-width:.5;opacity:0;transform-box:fill-box;transform-origin:center}
+.route .truck{fill:var(--ink);stroke:#fff;stroke-width:.5;opacity:0}
 .live{position:absolute;left:12px;right:12px;bottom:12px;background:rgba(255,255,255,.96);border-radius:12px;padding:12px 14px;box-shadow:0 12px 32px -12px rgba(11,27,51,.45);display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
 @media (min-width:480px){.live{left:16px;right:auto;bottom:16px;min-width:320px}}
 .live .dot{width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(18,166,106,.2)}
 .live .n{font-weight:700;font-size:14px}
 .live .d{font-size:12.5px;color:var(--muted);margin-top:2px}
-.live .f{text-align:right;font-family:var(--mono);font-size:14px;color:var(--blue);font-weight:500;white-space:nowrap}
-.live .f small{display:block;font-family:var(--body);color:var(--muted);font-weight:400;font-size:11px}
-.pin{position:absolute;top:36%;left:50%;width:30px;height:30px;border-radius:50% 50% 50% 0;background:var(--blue);transform:translate(-50%,-100%) rotate(-45deg);box-shadow:0 8px 20px -6px rgba(21,87,255,.8);border:3px solid #fff}
-.pin::after{content:"";position:absolute;inset:7px;border-radius:50%;background:#fff}
+.live .lf{text-align:right;font-family:var(--mono);font-size:15px;color:var(--blue);font-weight:500;white-space:nowrap;font-variant-numeric:tabular-nums}
+.live .lf small{display:block;font-family:var(--body);color:var(--muted);font-weight:400;font-size:11px}
+.scroll-cue{display:flex;justify-content:center;gap:8px;align-items:center;margin-top:18px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.scroll-cue i{width:18px;height:28px;border:2px solid var(--line-2);border-radius:10px;position:relative}
+.scroll-cue i::after{content:"";position:absolute;left:50%;top:5px;width:3px;height:6px;margin-left:-1.5px;border-radius:2px;background:var(--blue);animation:cue 1.6s infinite}
+@keyframes cue{0%{transform:translateY(0);opacity:1}100%{transform:translateY(10px);opacity:0}}
+@media (min-width:900px){.scroll-cue{justify-content:flex-start}}
 
-/* три выгоды */
+/* загрузка первого экрана */
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes phIn{from{opacity:0;transform:scale(1.06)}to{opacity:1;transform:none}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pinDrop{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+@keyframes ring{0%{transform:scale(.4);opacity:.7}100%{transform:scale(2.4);opacity:0}}
+@keyframes show{to{opacity:1}}
+.js .hero-top{animation:up .7s ease-out both}
+.js .hero-bottom{animation:up .7s .2s ease-out both}
+.js .hero-ph .ph img{animation:phIn 1s .1s ease-out both}
+.js .route .rl,.js .route .rb{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.3s cubic-bezier(.4,0,.2,1) .5s forwards}
+.js .route .pin{opacity:0;animation:pinDrop .5s cubic-bezier(.2,.8,.2,1) 1.6s both}
+.js .route .ring{animation:ring 2.4s ease-out 2.2s infinite}
+.js .route .truck{animation:show .4s 1.2s forwards}
+.js .live{animation:up .6s 1.9s ease-out both}
+
+/* ===== появление при прокрутке ===== */
+.js .rv{opacity:0;transform:translateY(20px);transition:opacity .7s ease-out,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0ms)}
+.js .rv.in{opacity:1;transform:none}
+.js .rv .ph img,.js .rv .vph img{transform:scale(1.06);transition:transform 1.4s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0ms)}
+.js .rv.in .ph img,.js .rv.in .vph img{transform:none}
+.js .m{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}
+.js .mi{display:block;transform:translateY(110%);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.js .in .mi{transform:none}
+
+/* ===== три выгоды ===== */
 .three{display:grid;gap:14px}
 @media (min-width:720px){.three{grid-template-columns:repeat(3,1fr)}}
 .three .card{display:grid;align-content:start}
@@ -156,45 +198,99 @@ p{margin:0}
 .three h3{margin-top:4px}
 .three p{color:var(--muted);font-size:15px;margin-top:6px}
 
-/* техника: секции */
-.veh{padding-block:clamp(14px,3vw,24px)}
-.veh:first-of-type{padding-top:clamp(44px,8vw,88px)}
-.veh-grid{display:grid;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-@media (min-width:860px){.veh-grid{grid-template-columns:1.15fr 1fr}.veh.flip .veh-grid{grid-template-columns:1fr 1.15fr}.veh.flip .veh-ph{order:2}}
-.veh-ph{aspect-ratio:16/10;position:relative;background:#DCE3ED}
-@media (min-width:860px){.veh-ph{aspect-ratio:auto;min-height:100%}}
-.veh-ph img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-.veh-ph .tag{position:absolute;left:14px;top:14px;background:rgba(255,255,255,.95)}
-.veh-t{padding:clamp(18px,4vw,32px)}
-.veh-t h2{font-size:clamp(20px,5vw,30px)}
-.ul{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
-.ul li{display:flex;gap:10px;align-items:flex-start;font-size:15.5px;line-height:1.4}
-.ul li::before{content:"";flex:none;width:20px;height:20px;border-radius:50%;background:var(--green-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2312A66A' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 10.5l3.2 3L15 7'/%3E%3C/svg%3E") center/14px no-repeat;margin-top:1px}
-.ul li b{font-weight:600}
-.res{margin-top:14px;display:inline-block;padding:9px 12px;border-radius:10px;background:var(--green-soft);color:#0B7A4E;font-weight:600;font-size:14px;line-height:1.4}
-.res b{font-family:var(--display);font-weight:700;font-size:16px;padding-inline:2px}
-.veh-t .btns{margin-top:18px}
-
-/* как работает */
-.steps{display:grid;gap:12px;counter-reset:s}
-@media (min-width:720px){.steps{grid-template-columns:repeat(3,1fr)}}
-.step{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:8px;align-content:start;counter-increment:s}
-.step::before{content:counter(s);width:40px;height:40px;border-radius:12px;background:var(--ink);color:#fff;font-family:var(--display);font-weight:700;display:grid;place-items:center;font-size:16px}
-.step h3{font-size:17px}
-.step p{color:var(--muted);font-size:14.5px}
-.step .time{font-family:var(--mono);font-size:12px;color:var(--blue);font-weight:500}
-
-/* контроль топлива, платформа */
+/* ===== контроль топлива: график рисуется прокруткой ===== */
 .split{display:grid;gap:18px;align-items:center}
 @media (min-width:860px){.split{grid-template-columns:1fr 1fr;gap:40px}}
+.fuel-ph{aspect-ratio:4/3}
+@media (min-width:860px){.fuel-ph{aspect-ratio:4/4.2}}
+.chart-card{position:absolute;left:12px;right:12px;bottom:12px;background:rgba(255,255,255,.96);border-radius:12px;padding:10px 12px 8px;box-shadow:0 12px 32px -12px rgba(11,27,51,.45)}
+.cc-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;color:var(--muted);font-weight:600}
+.cc-h b{font-family:var(--mono);font-size:16px;color:var(--ink);font-variant-numeric:tabular-nums}
+.chart-card canvas{width:100%;height:96px;display:block;margin-top:4px}
+.cc-f{display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:11.5px;margin-top:2px}
+.cc-f .g{color:var(--green)}
+.cc-f .r{color:var(--red);opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.cc-f .r.on{opacity:1;transform:none}
 .guar{margin-top:16px;padding:14px 16px;border-radius:12px;border:2px solid var(--ink);display:flex;gap:12px;align-items:center;background:var(--surface)}
 .guar b{font-family:var(--display);font-weight:800;font-size:clamp(22px,6vw,30px);line-height:1;white-space:nowrap}
 .guar span{font-size:14.5px;line-height:1.35}
+
+/* ===== техника: стопка карточек ===== */
+.stack{display:grid;gap:14px}
+.vcard{--off:calc(var(--top) + 14px + var(--k) * 8px);position:sticky;top:var(--off);scroll-margin-top:var(--off);z-index:calc(1 + var(--k));background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;transform-origin:50% 0;will-change:transform;box-shadow:0 24px 50px -34px rgba(11,27,51,.5);display:grid}
+.vcard::after{content:"";position:absolute;inset:0;background:#0B1B33;opacity:var(--sh,0);pointer-events:none}
+.stack.flat .vcard{position:static;transform:none!important}
+.vph{position:relative;height:clamp(140px,26svh,260px);background:#DCE3ED}
+.vph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vph .tag{position:absolute;left:14px;top:14px;background:rgba(255,255,255,.95)}
+.vt{padding:18px 18px 20px}
+.vt h3{font-size:clamp(18px,4.6vw,28px);font-weight:700}
+.vt .btn{margin-top:16px;width:100%}
+@media (min-width:860px){
+  .vcard{grid-template-columns:1.1fr 1fr}
+  .vph{height:auto;min-height:400px}
+  .vt{padding:32px;align-self:center}
+  .vt .btn{width:auto}
+}
+.stack-cue{text-align:center;font-size:13px;color:var(--muted);margin-top:14px}
+
+/* ===== как это работает: закреплённый телефон ===== */
+.story{height:320svh;position:relative}
+.stage{position:sticky;top:var(--top);height:calc(100svh - var(--top));display:flex;flex-direction:column}
+.stage-in{flex:1;width:100%;display:grid;grid-template-rows:auto auto 1fr;gap:12px;padding-block:10px 14px;min-height:0;--phone-h:min(44svh,420px)}
+.stage-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.dots{display:flex;gap:6px}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--line-2);transition:background .3s,transform .3s}
+.dots i.on{background:var(--blue);transform:scale(1.25)}
+.story-phone{display:flex;justify-content:center}
+.phone{height:var(--phone-h);aspect-ratio:9/17.4;border-radius:36px;background:#0B1B33;position:relative;box-shadow:0 30px 70px -30px rgba(11,27,51,.6);flex:none}
+.phone::before{content:"";position:absolute;top:12px;left:50%;transform:translateX(-50%);width:34%;height:16px;border-radius:999px;background:#0B1B33;z-index:5}
+.screen{position:absolute;inset:8px;border-radius:29px;overflow:hidden;background:#F6F8FB;opacity:0;transition:opacity .4s;display:flex;flex-direction:column}
+.screen.on{opacity:1}
+.sc-top{padding:32px 16px 6px;font-family:var(--mono);font-size:10px;color:var(--muted);display:flex;justify-content:space-between}
+.sc-title{padding:0 16px 8px;font-family:var(--display);font-weight:700;font-size:13px}
+.sc-map{flex:1;position:relative;min-height:0;background:linear-gradient(rgba(11,27,51,.06) 1px,transparent 1px) 0 0/26px 26px,linear-gradient(90deg,rgba(11,27,51,.06) 1px,transparent 1px) 0 0/26px 26px,#EEF2F8}
+.sc-map svg{position:absolute;inset:0;width:100%;height:100%}
+.sc-card{margin:8px;padding:9px 11px;background:#fff;border:1px solid var(--line);border-radius:12px;font-size:11px}
+.sc-card .n{font-family:var(--display);font-weight:700;font-size:11px;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc-row{display:flex;justify-content:space-between;gap:6px;font-family:var(--mono);font-size:9.5px;color:var(--muted);padding:2px 0;white-space:nowrap}
+.sc-row b{color:var(--ink);font-weight:500}
+.sc-row b.ok{color:var(--green)}.sc-row b.al{color:var(--red)}.sc-row b.fu{color:var(--blue)}
+.sc-chart{padding:4px 10px 0;flex:1;min-height:0;display:flex}
+.sc-chart canvas{width:100%;flex:1;min-height:90px;display:block}
+.pushes{padding:2px 8px;display:grid;gap:6px;align-content:start}
+.push{background:#fff;border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:10px;padding:7px 9px;font-size:10px;transform:translateX(24px);opacity:0;transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .45s}
+.push.on{transform:none;opacity:1}
+.push.al{border-left-color:var(--red)}.push.ok{border-left-color:var(--green)}
+.push .t{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:2px}
+.push .h{font-weight:700;font-size:11px;line-height:1.3}
+.push .d{color:var(--muted);margin-top:2px;font-size:9.5px;line-height:1.35}
+.story-steps{position:relative;min-height:0}
+.sstep{position:absolute;inset:0;display:flex;align-items:flex-start;opacity:0;transform:translateY(14px);transition:opacity .4s,transform .4s;pointer-events:none}
+.sstep.on{opacity:1;transform:none;pointer-events:auto}
+.sstep-in{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;max-height:100%;overflow:auto}
+.sstep-in h3{font-size:clamp(17px,4.6vw,24px)}
+.sstep-in p{color:var(--muted);font-size:15px;margin-top:6px}
+.sstep-in p b{color:var(--ink);font-weight:600}
+.sstep-in .time{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:12px;color:var(--blue);font-weight:500}
+@media (min-width:900px){
+  .stage-in{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;gap:16px 56px;align-items:center;--phone-h:min(66vh,600px)}
+  .stage-top{grid-column:1/-1}
+  .story-phone{justify-content:flex-end}
+  .story-steps{height:60vh}
+  .sstep{align-items:center}
+  .sstep-in{padding:28px}
+}
+.after-story{padding-top:8px}
+.cities{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.cities span{font-weight:600;font-size:13.5px;padding:8px 12px;border-radius:999px;background:var(--bg);border:1px solid var(--line-2)}
+
+/* ===== платформа ===== */
 .feat4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
 .feat4 div{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:14px;font-weight:600;display:flex;gap:10px;align-items:center}
 .feat4 svg{width:22px;height:22px;flex:none;stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-/* оборудование */
+/* ===== оборудование ===== */
 .eq{display:grid;gap:12px}
 @media (min-width:720px){.eq{grid-template-columns:repeat(3,1fr)}}
 .eq .card{padding:18px;display:grid;gap:8px;align-content:start;background:var(--bg)}
@@ -205,7 +301,7 @@ p{margin:0}
 .chips span{font-size:12.5px;font-weight:600;padding:5px 9px;border-radius:999px;border:1px solid var(--line-2);background:#fff}
 .chips span.hi{border-color:var(--blue);color:var(--blue);background:var(--blue-soft)}
 
-/* калькулятор */
+/* ===== калькулятор ===== */
 .calc{display:grid;gap:16px}
 @media (min-width:860px){.calc{grid-template-columns:1fr 1fr;gap:24px;align-items:start}}
 .calc .card{padding:20px}
@@ -225,20 +321,20 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .big.y{background:var(--green)}
 .big i{display:block;font-style:normal;font-size:13.5px;opacity:.8;margin-top:6px}
 
-/* кейсы */
+/* ===== кейсы ===== */
 .cases{display:grid;gap:12px}
 @media (min-width:860px){.cases{grid-template-columns:1.2fr 1fr 1fr}}
 .cases .ph{aspect-ratio:4/3}
 @media (min-width:860px){.cases .ph{aspect-ratio:auto;min-height:100%}}
 .case{padding:20px;display:grid;gap:8px;align-content:start;background:var(--bg)}
 .case .k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
-.case .num{font-family:var(--display);font-weight:800;font-size:clamp(28px,7vw,40px);color:var(--green);line-height:1}
+.case .num{font-family:var(--display);font-weight:800;font-size:clamp(28px,7vw,40px);color:var(--green);line-height:1;font-variant-numeric:tabular-nums}
 .case .num small{display:block;font-family:var(--body);font-weight:600;font-size:13px;color:var(--ink);margin-top:6px}
 .case p{color:var(--muted);font-size:14.5px}
 .quote{margin:12px 0 0;padding:20px 22px;border-radius:var(--r);background:var(--bg);border:1px solid var(--line);font-size:15.5px;line-height:1.55;border-left:4px solid var(--blue)}
 .quote footer{margin-top:10px;font-size:13px;color:var(--muted);font-weight:600}
 
-/* почему мы */
+/* ===== почему мы ===== */
 .why{display:grid;gap:18px}
 @media (min-width:860px){.why{grid-template-columns:1fr 1fr;align-items:center;gap:40px}}
 .why-list{display:grid;gap:10px;margin-top:18px}
@@ -248,10 +344,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .why-list span{color:var(--muted);font-size:14px}
 .badge{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;background:var(--ink);color:#fff;font-size:13px;font-weight:600;letter-spacing:.04em;margin-top:14px}
 .badge i{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#fff,#9aa6b8)}
-.cities{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-.cities span{font-weight:600;font-size:13.5px;padding:8px 12px;border-radius:999px;background:var(--bg);border:1px solid var(--line-2)}
 
-/* форма */
+/* ===== форма ===== */
 .form{display:grid;gap:12px;padding:20px;background:var(--bg)}
 .f{display:grid;gap:6px}
 .f label{font-size:13.5px;color:var(--muted);font-weight:600}
@@ -268,58 +362,30 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .ct a{text-decoration:none;font-weight:700;font-size:17px;overflow-wrap:anywhere}
 .ct span{display:block;color:var(--muted);font-size:13.5px;margin-top:3px}
 
-footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted);position:relative;z-index:10;background:var(--surface)}
 .ft{display:grid;gap:12px}
 .ft .soc{display:flex;flex-wrap:wrap;gap:14px}
 .ft a{color:var(--muted)}
 
 /* нижняя панель на телефоне */
-.bar{position:fixed;left:0;right:0;bottom:0;z-index:40;transform:translateY(110%);transition:transform .25s;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:10px}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;transform:translateY(110%);transition:transform .3s}
 .bar.show{transform:none}
 .bar .btn-p{flex:1}
 .bar .btn-wa{width:54px;padding:0}
 @media (min-width:900px){.bar{display:none}}
 
-/* ===== движение: один спокойный эффект ===== */
-.hdr{transition:box-shadow .3s}
-.hdr.scrolled{box-shadow:0 8px 28px -14px rgba(11,27,51,.3)}
-@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-@keyframes pinDrop{from{opacity:0;transform:translate(-50%,-160%) rotate(-45deg)}to{opacity:1;transform:translate(-50%,-100%) rotate(-45deg)}}
-@keyframes ring{0%{transform:translate(-50%,-50%) scale(.5);opacity:.6}100%{transform:translate(-50%,-50%) scale(2.2);opacity:0}}
-@keyframes draw{to{stroke-dashoffset:0}}
-/* первый экран: одна последовательность при загрузке */
-.js .hero-top{animation:up .7s ease-out both}
-.js .hero-bottom{animation:up .7s .15s ease-out both}
-.js .hero-ph .ph{animation:fade .9s .1s ease-out both}
-.js .pin{animation:pinDrop .5s cubic-bezier(.2,.7,.2,1) 1.6s both}
-.pin-ring{position:absolute;top:36%;left:50%;width:34px;height:34px;border-radius:50%;border:2px solid var(--blue);opacity:0;pointer-events:none}
-.js .pin-ring{animation:ring 2.4s ease-out 2.2s infinite}
-.route{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.route .rl{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;opacity:.9;vector-effect:non-scaling-stroke}
-.route .rb{fill:none;stroke:var(--blue);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.js .route .rl,.js .route .rb{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.2s ease-in-out .6s forwards}
-.route .rd{display:none}
-.js .live{animation:up .6s 1.9s ease-out both}
-/* появление при прокрутке */
-.js .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease-out,transform .6s ease-out;transition-delay:var(--d,0ms)}
-.js .rv.in{opacity:1;transform:none}
-.js .rv .ph img,.js .rv .veh-ph img{opacity:0;transform:scale(1.04);transition:opacity .8s ease-out,transform 1.2s ease-out;transition-delay:var(--d,0ms)}
-.js .rv.in .ph img,.js .rv.in .veh-ph img{opacity:1;transform:none}
-.three .ph img{transition:transform .5s ease-out}
-.btn{transition:background .15s,transform .15s}
-.btn:hover{transform:translateY(-1px)}
-.btn:active{transform:translateY(1px)}
 @media (prefers-reduced-motion:reduce){
-  .js .rv,.js .rv .ph img,.js .rv .veh-ph img,.js .route .rl,.js .route .rb{opacity:1;transform:none;stroke-dashoffset:0;animation:none;transition:none}
-  .js .hero-top,.js .hero-bottom,.js .hero-ph .ph,.js .pin,.js .live,.js .pin-ring{animation:none;opacity:1}
+  html{scroll-behavior:auto}
+  .js .rv,.js .rv .ph img,.js .rv .vph img,.js .mi,.js .route .rl,.js .route .rb,.js .route .pin,.js .route .truck,.js .live,.js .hero-top,.js .hero-bottom,.js .hero-ph .ph img{opacity:1;transform:none;stroke-dashoffset:0;animation:none;transition:none}
+  .js .route .ring,.scroll-cue i::after{animation:none}
+  .stack .vcard{position:static;transform:none!important}
 }
 </style>
 </head>
 <body>
 <a class="skip" href="#start">К содержанию</a>
 
-<header class="hdr">
+<header class="hdr" id="hdr">
   <div class="hdr-in">
     <a class="logo" href="#start" aria-label="Контроль Техники, на главную">
       <svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0B1B33"/><path d="M32 12c-8 0-14 6-14 14 0 11 14 26 14 26s14-15 14-26c0-8-6-14-14-14z" fill="#1557FF"/><circle cx="32" cy="26" r="5.5" fill="#fff"/></svg>
@@ -363,7 +429,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
 
 <main>
 
-<!-- HERO -->
+<!-- ===== ПЕРВЫЙ ЭКРАН ===== -->
 <section class="sec hero" id="start">
   <div class="wrap hero-grid">
     <div class="hero-top">
@@ -371,38 +437,42 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
       <h1>GPS-мониторинг транспорта <span class="acc">и контроль топлива</span></h1>
       <p class="plain">Прибор в машину, датчик в бак. На телефоне видите: <b>где машина, сколько топлива и кто слил.</b></p>
     </div>
+    <div class="hero-ph" id="hero-ph">
+      <figure class="ph"><img src="https://images.unsplash.com/photo-1708193203896-ba0630862bb6?auto=format&fit=crop&w=1200&q=72" alt="Грузовики на трассе, вид сверху" fetchpriority="high">
+      <svg class="route" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <path class="rl" pathLength="1" d="M-6 30 C 12 27, 22 46, 34 50 S 50 52, 55 44"/>
+        <path class="rb" id="heroPath" pathLength="1" d="M-6 30 C 12 27, 22 46, 34 50 S 50 52, 55 44"/>
+        <g transform="translate(55 44)">
+          <circle class="ring" r="4"/>
+          <g class="pin" transform="scale(.9)"><path d="M0 0c-2.6-3.1-3.6-4.6-3.6-6.4a3.6 3.6 0 0 1 7.2 0c0 1.8-1 3.3-3.6 6.4z"/><circle cy="-6.4" r="1.4" fill="#fff" stroke="none"/></g>
+        </g>
+        <g class="truck" id="heroTruck"><circle r="5" fill="rgba(21,87,255,.22)" stroke="none"/><rect x="-2.8" y="-1.4" width="5.6" height="2.8" rx=".7"/><rect x="1.3" y="-1" width="1.3" height="2" rx=".3" fill="#fff" stroke="none"/></g>
+      </svg>
+      </figure>
+      <div class="live" aria-label="Пример карточки машины в приложении">
+        <span class="dot"></span>
+        <div><div class="n">КамАЗ 65115 · 412 ABC 01</div><div class="d" id="liveD">В движении · 62 км/ч · трасса Астана–Караганда</div></div>
+        <div class="lf"><span id="liveFuel">318 л</span><small>топливо в баке</small></div>
+      </div>
+    </div>
     <div class="hero-bottom">
       <div class="btns">
         <a class="btn btn-p" href="#kontakty">Рассчитать стоимость</a>
         <a class="btn btn-wa" href="https://wa.me/77778703080?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20GPS-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2m0 1.67c4.54 0 8.24 3.7 8.24 8.24s-3.7 8.24-8.24 8.24c-1.5 0-2.97-.41-4.25-1.18l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.35c0-4.54 3.7-8.24 8.3-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.14.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01"/></svg>Написать в WhatsApp</a>
       </div>
       <div class="trust">
-        <div class="rv"><b><span class="cnt" data-to="1000">0</span>+</b><span>машин подключено в Казахстане</span></div>
-        <div class="rv"><b>до <span class="cnt" data-to="40">0</span>%</b><span>экономии топлива</span></div>
-        <div class="rv"><b>1 день</b><span>от звонка до установки</span></div>
-        <div class="rv"><b>24/7</b><span>техподдержка</span></div>
+        <div><b><span class="cnt" data-to="1000">0</span>+</b><span>машин подключено в Казахстане</span></div>
+        <div><b>до <span class="cnt" data-to="40">0</span>%</b><span>экономии топлива</span></div>
+        <div><b>1 день</b><span>от звонка до установки</span></div>
+        <div><b>24/7</b><span>техподдержка</span></div>
       </div>
-    </div>
-    <div class="hero-ph">
-      <figure class="ph"><img src="https://images.unsplash.com/photo-1708193203896-ba0630862bb6?auto=format&fit=crop&w=1200&q=72" alt="Грузовики на трассе, вид сверху" fetchpriority="high"></figure>
-      <svg class="route" id="route" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <path class="rl" pathLength="1" d="M6 94 C 18 86, 22 70, 30 62 S 42 48, 50 36"/>
-        <path class="rb" pathLength="1" d="M6 94 C 18 86, 22 70, 30 62 S 42 48, 50 36"/>
-        <path class="rd" d="M6 94 C 18 86, 22 70, 30 62 S 42 48, 50 36"/>
-      </svg>
-      <span class="pin-ring" aria-hidden="true"></span>
-      <span class="pin" aria-hidden="true"></span>
-      <div class="live" aria-label="Пример карточки машины в приложении">
-        <span class="dot"></span>
-        <div><div class="n">КамАЗ 65115 · 412 ABC 01</div><div class="d">В движении · 62 км/ч · трасса Астана–Караганда</div></div>
-        <div class="f">312 л<small>топливо в баке</small></div>
-      </div>
+      <div class="scroll-cue"><i></i>листайте, машина поедет</div>
     </div>
   </div>
 </section>
 
-<!-- ЧТО ВЫ ПОЛУЧИТЕ -->
-<section class="sec sec-alt" id="gps-monitoring">
+<!-- ===== GPS-МОНИТОРИНГ ===== -->
+<section class="sec sheet" id="gps-monitoring">
   <div class="wrap">
     <div class="sec-head center rv">
       <div class="eyebrow">GPS-мониторинг транспорта</div>
@@ -423,14 +493,21 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
         <div class="t"><span class="tag">Что случилось</span><h3>Отчёты и уведомления</h3><p>Пробег, моточасы, простои. Слив или выезд за зону приходят сразу на телефон.</p></div>
       </div>
     </div>
-    <div class="btns" style="margin-top:22px;justify-content:center"><a class="btn btn-p" href="#kontakty" style="flex:0 1 320px">Подключить мониторинг</a></div>
+    <div class="btns rv" style="margin-top:22px;justify-content:center"><a class="btn btn-p" href="#kontakty" style="flex:0 1 320px">Подключить мониторинг</a></div>
   </div>
 </section>
 
-<!-- КОНТРОЛЬ ТОПЛИВА -->
+<!-- ===== КОНТРОЛЬ ТОПЛИВА ===== -->
 <section class="sec" id="kontrol-topliva">
   <div class="wrap split">
-    <figure class="ph r43 rv"><img src="https://images.unsplash.com/photo-1453509337612-46f7e5e7f6b3?auto=format&fit=crop&w=1000&q=70" alt="Топливозаправочный кран" loading="lazy"></figure>
+    <figure class="ph fuel-ph rv" id="fuelPh">
+      <img src="https://images.unsplash.com/photo-1453509337612-46f7e5e7f6b3?auto=format&fit=crop&w=1000&q=70" alt="Топливозаправочный кран" loading="lazy">
+      <div class="chart-card" aria-label="График уровня топлива за сутки">
+        <div class="cc-h"><span>Топливо · КамАЗ 412 · сутки</span><b id="fuelLvl">296 л</b></div>
+        <canvas id="fuelChart"></canvas>
+        <div class="cc-f"><span class="g" id="refuelTag" style="opacity:0">+180 л заправка · 08:40</span><span class="r" id="drainTag">−48 л слив · 02:14</span></div>
+      </div>
+    </figure>
     <div class="rv">
       <div class="eyebrow">Контроль топлива</div>
       <h2>Датчик в баке. Сливы заканчиваются в первую неделю</h2>
@@ -446,132 +523,142 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   </div>
 </section>
 
-<!-- ТЕХНИКА -->
-<section class="sec veh" id="gruzovye">
-  <div class="wrap">
-    <div class="veh-grid rv">
-      <div class="veh-ph"><img src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=1200&q=70" alt="Ряд грузовиков на стоянке" loading="lazy"><span class="tag">Грузовой транспорт</span></div>
-      <div class="veh-t">
-        <h2>Фуры, КамАЗы, доставка</h2>
-        <ul class="ul">
-          <li>Был ли у клиента, сколько стоял под разгрузкой</li>
-          <li>Реальный расход на 100 км против нормы</li>
-          <li>Холостой ход и простои по каждой машине</li>
-        </ul>
-        <div class="res">Обычно <b>−25%</b> к пробегу за первый месяц</div>
-        <div class="btns"><a class="btn btn-p" href="#kontakty">Подключить грузовые</a></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="sec veh flip" id="spectehnika">
-  <div class="wrap">
-    <div class="veh-grid rv">
-      <div class="veh-ph"><img src="https://images.unsplash.com/photo-1575281923032-f40d94ef6160?auto=format&fit=crop&w=1200&q=70" alt="Экскаватор грузит самосвал на стройке" loading="lazy"><span class="tag">Спецтехника</span></div>
-      <div class="veh-t">
-        <h2>Экскаваторы, краны, погрузчики</h2>
-        <ul class="ul">
-          <li>Моточасы под нагрузкой и на холостом</li>
-          <li>Топливо в больших баках, сливы на объекте ночью</li>
-          <li>Геозона «стройка»: не уехала ли техника подработать</li>
-        </ul>
-        <div class="res">До <b>−40%</b> расходов на ГСМ</div>
-        <div class="btns"><a class="btn btn-p" href="#kontakty">Подключить спецтехнику</a></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="sec veh" id="selhoz">
-  <div class="wrap">
-    <div class="veh-grid rv">
-      <div class="veh-ph"><img src="https://images.unsplash.com/photo-1594771804886-a933bb2d609b?auto=format&fit=crop&w=1200&q=70" alt="Трактор в поле" loading="lazy"><span class="tag">Сельхозтехника</span></div>
-      <div class="veh-t">
-        <h2>Тракторы, комбайны, опрыскиватели</h2>
-        <ul class="ul">
-          <li>Обработанные гектары с перекрытиями и пропусками</li>
-          <li>Заправка в поле с заправщика тоже в отчёте</li>
-          <li>Параллельное вождение SunNav AG 500: ровные ряды, экономия семян</li>
-        </ul>
-        <div class="res">Контроль <b>24/7</b> в посевную и уборку</div>
-        <div class="btns"><a class="btn btn-p" href="#kontakty">Подключить сельхозтехнику</a></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="sec veh flip" id="karernaya">
-  <div class="wrap">
-    <div class="veh-grid rv">
-      <div class="veh-ph"><img src="https://images.unsplash.com/photo-1760568787655-247d67618f37?auto=format&fit=crop&w=1200&q=70" alt="Самосвал разгружает породу в карьере" loading="lazy"><span class="tag">Карьерная техника</span></div>
-      <div class="veh-t">
-        <h2>Самосвалы, БелАЗы, карьерные погрузчики</h2>
-        <ul class="ul">
-          <li>Количество рейсов забой–отвал автоматически</li>
-          <li>Датчики под баки 500–1500 литров</li>
-          <li>Моточасы, ожидание погрузки, простои</li>
-        </ul>
-        <div class="res">Кейс: <b>25%+</b> экономии топлива ежемесячно</div>
-        <div class="btns"><a class="btn btn-p" href="#kontakty">Подключить карьерную технику</a></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="sec veh" id="toplivozapravshik">
-  <div class="wrap">
-    <div class="veh-grid rv">
-      <div class="veh-ph"><img src="https://images.unsplash.com/photo-1549909226-2f7fcd960d6e?auto=format&fit=crop&w=1200&q=70" alt="Топливозаправщик на дороге" loading="lazy"><span class="tag">Топливозаправщики</span></div>
-      <div class="veh-t">
-        <h2>Кому, сколько и когда выдали топливо</h2>
-        <ul class="ul">
-          <li>Выдал 180 л, в баке у машины появилось 180 л. Если нет, видно сразу</li>
-          <li>Уровень в цистерне и в баке самого заправщика</li>
-          <li>Маршрут и лишние остановки по дороге</li>
-        </ul>
-        <div class="res">Ничего не «испаряется»</div>
-        <div class="btns"><a class="btn btn-p" href="#kontakty">Подключить заправщик</a></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="sec veh flip" id="legkovye">
-  <div class="wrap">
-    <div class="veh-grid rv">
-      <div class="veh-ph"><img src="https://images.unsplash.com/photo-1587813369290-091c9d432daf?auto=format&fit=crop&w=1200&q=70" alt="Ряд белых служебных фургонов" loading="lazy"><span class="tag">Легковые и служебные</span></div>
-      <div class="veh-t">
-        <h2>Курьеры, торговые представители, служебные авто</h2>
-        <ul class="ul">
-          <li>Без монтажа: терминал в разъём OBD II за 5 минут</li>
-          <li>Рабочие и личные поездки в рабочее время</li>
-          <li>Расход, превышения скорости, стиль вождения</li>
-        </ul>
-        <div class="res">Установка <b>за 5 минут</b></div>
-        <div class="btns"><a class="btn btn-p" href="#kontakty">Подключить легковые</a></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- КАК ЭТО РАБОТАЕТ -->
-<section class="sec sec-alt" id="montazh" style="margin-top:clamp(30px,5vw,64px)">
+<!-- ===== ТЕХНИКА: СТОПКА ===== -->
+<section class="sec" id="tehnika" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head center rv">
-      <div class="eyebrow">Как это работает</div>
-      <h2>От звонка до первого отчёта за 1–2 дня</h2>
+      <div class="eyebrow">Для какой техники</div>
+      <h2>Выберите свою технику</h2>
     </div>
-    <div class="steps">
-      <div class="step rv"><h3>Выезжаем и ставим</h3><p>Инженер ставит терминал Omnicomm в машину и датчик в бак. Скрытно от водителя, без повреждений.</p><span class="time">2–3 часа на машину</span></div>
-      <div class="step rv"><h3>Тарируем бак</h3><p>Заливаем топливо порциями и «обучаем» датчик под ваш бак. Поэтому литры в отчёте совпадают с реальностью.</p><span class="time">1–2 часа</span></div>
-      <div class="step rv"><h3>Вы открываете приложение</h3><p>Настраиваем геозоны, отчёты и уведомления. Показываем, куда смотреть. Дальше поддержка 24/7.</p><span class="time">30 минут обучения</span></div>
+    <div class="stack" id="stack">
+      <article class="vcard rv" id="gruzovye" style="--k:0">
+        <div class="vph"><img src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=1200&q=70" alt="Ряд грузовиков на стоянке" loading="lazy"><span class="tag">Грузовой транспорт</span></div>
+        <div class="vt">
+          <h3>Фуры, КамАЗы, доставка</h3>
+          <ul class="ul"><li>Был ли у клиента, сколько стоял</li><li>Реальный расход против нормы</li><li>Холостой ход и простои</li></ul>
+          <div class="res">Обычно <b>−25%</b> к пробегу за первый месяц</div>
+          <a class="btn btn-p" href="#kontakty">Подключить грузовые</a>
+        </div>
+      </article>
+      <article class="vcard rv" id="spectehnika" style="--k:1">
+        <div class="vph"><img src="https://images.unsplash.com/photo-1575281923032-f40d94ef6160?auto=format&fit=crop&w=1200&q=70" alt="Экскаватор грузит самосвал на стройке" loading="lazy"><span class="tag">Спецтехника</span></div>
+        <div class="vt">
+          <h3>Экскаваторы, краны, погрузчики</h3>
+          <ul class="ul"><li>Моточасы под нагрузкой и вхолостую</li><li>Сливы на объекте, даже ночью</li><li>Геозона «стройка»: не уехала ли</li></ul>
+          <div class="res">До <b>−40%</b> расходов на ГСМ</div>
+          <a class="btn btn-p" href="#kontakty">Подключить спецтехнику</a>
+        </div>
+      </article>
+      <article class="vcard rv" id="selhoz" style="--k:2">
+        <div class="vph"><img src="https://images.unsplash.com/photo-1594771804886-a933bb2d609b?auto=format&fit=crop&w=1200&q=70" alt="Трактор в поле" loading="lazy"><span class="tag">Сельхозтехника</span></div>
+        <div class="vt">
+          <h3>Тракторы, комбайны, опрыскиватели</h3>
+          <ul class="ul"><li>Обработанные гектары и пропуски</li><li>Заправка в поле тоже в отчёте</li><li>Параллельное вождение SunNav AG 500</li></ul>
+          <div class="res">Контроль <b>24/7</b> в посевную и уборку</div>
+          <a class="btn btn-p" href="#kontakty">Подключить сельхозтехнику</a>
+        </div>
+      </article>
+      <article class="vcard rv" id="karernaya" style="--k:3">
+        <div class="vph"><img src="https://images.unsplash.com/photo-1760568787655-247d67618f37?auto=format&fit=crop&w=1200&q=70" alt="Самосвал разгружает породу в карьере" loading="lazy"><span class="tag">Карьерная техника</span></div>
+        <div class="vt">
+          <h3>Самосвалы, БелАЗы, погрузчики</h3>
+          <ul class="ul"><li>Рейсы забой–отвал считаются сами</li><li>Датчики под баки 500–1500 л</li><li>Моточасы и ожидание погрузки</li></ul>
+          <div class="res">Кейс: <b>25%+</b> экономии топлива ежемесячно</div>
+          <a class="btn btn-p" href="#kontakty">Подключить карьерную технику</a>
+        </div>
+      </article>
+      <article class="vcard rv" id="toplivozapravshik" style="--k:4">
+        <div class="vph"><img src="https://images.unsplash.com/photo-1549909226-2f7fcd960d6e?auto=format&fit=crop&w=1200&q=70" alt="Топливозаправщик на дороге" loading="lazy"><span class="tag">Топливозаправщики</span></div>
+        <div class="vt">
+          <h3>Кому, сколько и когда выдали топливо</h3>
+          <ul class="ul"><li>Выдал 180 л, в баке появилось 180 л</li><li>Уровень в цистерне и в своём баке</li><li>Маршрут и лишние остановки</li></ul>
+          <div class="res">Ничего не «испаряется»</div>
+          <a class="btn btn-p" href="#kontakty">Подключить заправщик</a>
+        </div>
+      </article>
+      <article class="vcard rv" id="legkovye" style="--k:5">
+        <div class="vph"><img src="https://images.unsplash.com/photo-1587813369290-091c9d432daf?auto=format&fit=crop&w=1200&q=70" alt="Ряд белых служебных фургонов" loading="lazy"><span class="tag">Легковые и служебные</span></div>
+        <div class="vt">
+          <h3>Курьеры, торговые, служебные авто</h3>
+          <ul class="ul"><li>Без монтажа: терминал в разъём OBD II</li><li>Рабочие и личные поездки</li><li>Расход, скорость, стиль вождения</li></ul>
+          <div class="res">Установка <b>за 5 минут</b></div>
+          <a class="btn btn-p" href="#kontakty">Подключить легковые</a>
+        </div>
+      </article>
     </div>
-    <div class="cities rv" style="justify-content:center"><span>Астана</span><span>Алматы</span><span>Кокшетау</span><span>Тараз</span><span>выезд по Казахстану</span></div>
   </div>
 </section>
 
-<!-- ПЛАТФОРМА -->
+<!-- ===== КАК ЭТО РАБОТАЕТ: ЗАКРЕПЛЁННЫЙ ТЕЛЕФОН ===== -->
+<section class="sec sheet" id="montazh" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="sec-head center rv" style="margin-bottom:0">
+      <div class="eyebrow">Как это работает</div>
+      <h2>Три шага до первого отчёта</h2>
+      <p class="lead">Листайте: экран телефона покажет, что вы увидите на каждом шаге.</p>
+    </div>
+  </div>
+  <div class="story" id="story">
+    <div class="stage">
+      <div class="wrap stage-in">
+        <div class="stage-top"><span id="stageLbl">Шаг 1 из 3</span><span class="dots" id="dots"><i class="on"></i><i></i><i></i></span></div>
+        <div class="story-phone">
+          <div class="phone" role="img" aria-label="Экран приложения мониторинга">
+            <div class="screen on" data-s="0">
+              <div class="sc-top"><span>Multitrack</span><span id="clock">14:32</span></div>
+              <div class="sc-title">Карта · 7 машин</div>
+              <div class="sc-map">
+                <svg viewBox="0 0 200 260" aria-hidden="true">
+                  <path d="M-10 230 C 40 210, 50 150, 90 140 S 150 100, 210 60" stroke="#D5DEEA" stroke-width="12" fill="none" stroke-linecap="round"/>
+                  <path d="M20 -10 C 30 60, 120 80, 140 200 S 170 280, 150 300" stroke="#D5DEEA" stroke-width="8" fill="none"/>
+                  <path id="miniPath" d="M-10 230 C 40 210, 50 150, 90 140 S 150 100, 210 60" stroke="#1557FF" stroke-width="2.5" fill="none" stroke-dasharray="5 6"/>
+                  <circle cx="46" cy="60" r="5" fill="#12A66A"/><circle cx="160" cy="210" r="5" fill="#12A66A"/><circle cx="30" cy="180" r="5" fill="#93A4BD"/>
+                  <g id="miniTruck"><circle r="11" fill="rgba(21,87,255,.18)"/><rect x="-7" y="-4" width="14" height="8" rx="2" fill="#0B1B33" stroke="#fff" stroke-width="1.5"/></g>
+                </svg>
+              </div>
+              <div class="sc-card">
+                <div class="n">КамАЗ · 412 ABC 01</div>
+                <div class="sc-row"><span>статус</span><b class="ok">едет · <span id="miniSpd">0</span> км/ч</b></div>
+                <div class="sc-row"><span>топливо</span><b class="fu">312 л · 78%</b></div>
+                <div class="sc-row"><span>сегодня</span><b><span id="miniKm">0</span> км · 6ч20м</b></div>
+              </div>
+            </div>
+            <div class="screen" data-s="1">
+              <div class="sc-top"><span>Multitrack</span><span>14:32</span></div>
+              <div class="sc-title">Топливо · КамАЗ 412</div>
+              <div class="sc-chart"><canvas id="storyChart" aria-hidden="true"></canvas></div>
+              <div class="sc-card">
+                <div class="sc-row"><span>заправка</span><b class="ok">+180 л · 08:40</b></div>
+                <div class="sc-row"><span>слив</span><b class="al">−48 л · 02:14</b></div>
+                <div class="sc-row"><span>расход</span><b>86 л / сутки</b></div>
+              </div>
+            </div>
+            <div class="screen" data-s="2">
+              <div class="sc-top"><span>Multitrack</span><span>14:32</span></div>
+              <div class="sc-title">Уведомления</div>
+              <div class="pushes" id="pushes">
+                <div class="push al"><div class="t"><span>КамАЗ 412</span><span>02:14</span></div><div class="h">Слив топлива −48 л</div><div class="d">Стоянка, трасса Р-2. Двигатель заглушен.</div></div>
+                <div class="push"><div class="t"><span>MAN 207</span><span>06:58</span></div><div class="h">Выезд из геозоны «База»</div><div class="d">Вне графика (смена с 08:00).</div></div>
+                <div class="push"><div class="t"><span>Hyundai 118</span><span>11:20</span></div><div class="h">Скорость 97 км/ч</div><div class="d">Ограничение на участке 70 км/ч.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="story-steps" id="steps">
+          <div class="sstep on"><div class="sstep-in"><h3>Ставим прибор в машину</h3><p>Терминал Omnicomm размером с ладонь. Ловит GPS/ГЛОНАСС, отправляет данные по сотовой сети. <b>Водителю не виден.</b></p><span class="time">2–3 часа на машину</span></div></div>
+          <div class="sstep"><div class="sstep-in"><h3>Ставим датчик в бак и тарируем</h3><p>Датчик LLS5 измеряет литры <b>с точностью до 3%</b>. Заливаем топливо порциями и «обучаем» его под ваш бак.</p><span class="time">1–2 часа</span></div></div>
+          <div class="sstep"><div class="sstep-in"><h3>Вы открываете приложение</h3><p>Карта, заправки и сливы, пробег, моточасы. Если что-то не так, <b>уведомление приходит сразу.</b> Поддержка 24/7.</p><span class="time">30 минут обучения</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap after-story" style="padding-bottom:clamp(44px,8vw,88px)">
+    <div class="cities rv"><span>Астана</span><span>Алматы</span><span>Кокшетау</span><span>Тараз</span><span>выезд по Казахстану</span></div>
+    <div class="btns rv" style="margin-top:16px;justify-content:center"><a class="btn btn-p" href="#kontakty" style="flex:0 1 320px">Вызвать инженера</a></div>
+  </div>
+</section>
+
+<!-- ===== ПЛАТФОРМА ===== -->
 <section class="sec" id="platforma">
   <div class="wrap split">
     <div class="rv">
@@ -590,8 +677,8 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   </div>
 </section>
 
-<!-- ОБОРУДОВАНИЕ -->
-<section class="sec sec-alt" id="oborudovanie">
+<!-- ===== ОБОРУДОВАНИЕ ===== -->
+<section class="sec sheet" id="oborudovanie">
   <div class="wrap">
     <div class="sec-head center rv">
       <div class="eyebrow">Оборудование Omnicomm</div>
@@ -605,7 +692,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   </div>
 </section>
 
-<!-- КАЛЬКУЛЯТОР -->
+<!-- ===== КАЛЬКУЛЯТОР ===== -->
 <section class="sec" id="kalkulyator">
   <div class="wrap">
     <div class="sec-head center rv">
@@ -627,8 +714,8 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   </div>
 </section>
 
-<!-- КЕЙСЫ -->
-<section class="sec sec-alt" id="keisy">
+<!-- ===== КЕЙСЫ ===== -->
+<section class="sec sheet" id="keisy">
   <div class="wrap">
     <div class="sec-head center rv">
       <div class="eyebrow">Кейсы</div>
@@ -636,14 +723,14 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
     </div>
     <div class="cases">
       <figure class="ph rv"><img src="https://omnicomm-expert.kz/upload/iblock/195/1959d28db22546095b7b2b107d809ddb.JPG" alt="Спецтехника с установленными датчиками уровня топлива" loading="lazy"></figure>
-      <div class="card case rv"><span class="k">Карьерная техника</span><div class="num">25%+<small>экономии топлива каждый месяц</small></div><p>Выбрали нас, несмотря на конкурентов с ценой ниже. Экономия пошла с первого месяца.</p></div>
-      <div class="card case rv"><span class="k">Строительство · Коркем-Сервис Центр</span><div class="num">500 тыс. ₸<small>экономии топлива в месяц</small></div><p>Парк строительной техники оснащён решением Omnicomm без остановки работ.</p></div>
+      <div class="card case rv"><span class="k">Карьерная техника</span><div class="num"><span class="cnt" data-to="25">0</span>%+<small>экономии топлива каждый месяц</small></div><p>Выбрали нас, несмотря на конкурентов с ценой ниже. Экономия пошла с первого месяца.</p></div>
+      <div class="card case rv"><span class="k">Строительство · Коркем-Сервис Центр</span><div class="num"><span class="cnt" data-to="500">0</span> тыс. ₸<small>экономии топлива в месяц</small></div><p>Парк строительной техники оснащён решением Omnicomm без остановки работ.</p></div>
     </div>
     <blockquote class="quote rv">Благодарим ТОО «Контроль Техники» за внедрение GPS-мониторинга, качественный анализ топливных данных и своевременную техническую поддержку. Рекомендуем как компетентного партнёра.<footer>Из официального отзыва клиента</footer></blockquote>
   </div>
 </section>
 
-<!-- ПОЧЕМУ МЫ -->
+<!-- ===== ПОЧЕМУ МЫ ===== -->
 <section class="sec" id="pochemu-my">
   <div class="wrap why">
     <div class="rv">
@@ -661,8 +748,8 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   </div>
 </section>
 
-<!-- КОНТАКТЫ -->
-<section class="sec sec-alt" id="kontakty">
+<!-- ===== КОНТАКТЫ ===== -->
+<section class="sec sheet" id="kontakty">
   <div class="wrap">
     <div class="sec-head rv">
       <div class="eyebrow">Заявка</div>
@@ -705,7 +792,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   </div>
 </footer>
 
-<div class="bar">
+<div class="bar" id="bar">
   <a class="btn btn-p" href="#kontakty">Рассчитать стоимость</a>
   <a class="btn btn-wa" href="https://wa.me/77778703080?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20GPS-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" style="width:26px;height:26px"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2m0 1.67c4.54 0 8.24 3.7 8.24 8.24s-3.7 8.24-8.24 8.24c-1.5 0-2.97-.41-4.25-1.18l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.35c0-4.54 3.7-8.24 8.3-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.14.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01"/></svg></a>
 </div>
@@ -713,8 +800,11 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
 <script>
 (function(){
   var $=function(s,c){return (c||document).querySelector(s)}, $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+  var clamp=function(v,a,b){return v<a?a:v>b?b:v};
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.documentElement.classList.add('js');
 
-  /* меню */
+  /* ---------- меню ---------- */
   var nav=$('#nav'), burger=$('#burger');
   function toggleNav(o){ nav.classList.toggle('open',o); burger.setAttribute('aria-expanded',o?'true':'false'); burger.setAttribute('aria-label',o?'Закрыть меню':'Открыть меню'); document.body.style.overflow=o?'hidden':'';
     burger.innerHTML=o?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>' }
@@ -722,16 +812,127 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   $$('a',nav).forEach(function(a){a.addEventListener('click',function(){toggleNav(false)})});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')toggleNav(false)});
 
-  /* калькулятор */
+  /* ---------- заголовки под маской ---------- */
+  $$('.sec-head h2').forEach(function(h){ h.innerHTML='<span class="m"><span class="mi">'+h.innerHTML+'</span></span>' });
+
+  /* ---------- появление блоков ---------- */
+  $$('.rv').forEach(function(el){ var i=0, sib=el.previousElementSibling; while(sib && sib.classList.contains('rv')){ i++; sib=sib.previousElementSibling } el.style.setProperty('--d', Math.min(i,4)*70+'ms') });
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target) } }) },{rootMargin:'0px 0px -6% 0px',threshold:0.1});
+  $$('.rv').forEach(function(el){ io.observe(el) });
+
+  /* ---------- счётчики ---------- */
+  var cio=new IntersectionObserver(function(es){ es.forEach(function(e){ if(!e.isIntersecting) return; var el=e.target, to=+el.dataset.to, t0=null; cio.unobserve(el);
+    if(reduce){ el.textContent=to; return }
+    (function st(ts){ if(!t0) t0=ts; var k=Math.min(1,(ts-t0)/1100); k=1-Math.pow(1-k,3); el.textContent=Math.round(to*k); if(k<1) requestAnimationFrame(st) })(performance.now());
+  }) },{threshold:0.6});
+  $$('.cnt').forEach(function(el){ cio.observe(el) });
+
+  /* ---------- график топлива (общий) ---------- */
+  var series=[[0,296],[1,294],[2.2,292],[2.3,244],[4,241],[6,238],[8.6,214],[8.75,394],[10,380],[12,352],[14,330],[16,312],[18,300],[20,286],[22,274],[24,262]];
+  function fuelAt(h){ for(var i=0;i<series.length-1;i++){var a=series[i],b=series[i+1]; if(h>=a[0]&&h<=b[0]){var k=(h-a[0])/(b[0]-a[0]); return a[1]+(b[1]-a[1])*k}} return series[series.length-1][1] }
+  function drawChart(cv,t){
+    var w=cv.clientWidth, h=cv.clientHeight; if(!w||!h) return;
+    var dpr=Math.min(window.devicePixelRatio||1,2);
+    if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){ cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr) }
+    var c=cv.getContext('2d'); c.setTransform(dpr,0,0,dpr,0,0); c.clearRect(0,0,w,h);
+    var padL=4,padR=4,padT=12,padB=14,minV=200,maxV=420;
+    var X=function(hr){return padL+(hr/24)*(w-padL-padR)}, Y=function(v){return padT+(1-(v-minV)/(maxV-minV))*(h-padT-padB)};
+    c.strokeStyle='rgba(11,27,51,.08)'; c.lineWidth=1; c.beginPath(); [200,300,400].forEach(function(v){c.moveTo(padL,Y(v));c.lineTo(w-padR,Y(v))}); c.stroke();
+    c.fillStyle='#8A99B0'; c.font='500 9px JetBrains Mono, monospace';
+    c.textAlign='left'; c.fillText('00:00',X(0),h-3); c.textAlign='center'; c.fillText('12:00',X(12),h-3); c.textAlign='right'; c.fillText('24:00',X(24),h-3);
+    c.fillText('400 л',w-padR,Y(400)-3); c.fillText('300 л',w-padR,Y(300)-3); c.textAlign='left';
+    var end=24*t;
+    c.beginPath(); c.moveTo(X(0),Y(fuelAt(0)));
+    for(var hr=0;hr<=end;hr+=0.1){ c.lineTo(X(hr),Y(fuelAt(hr))) }
+    var lx=X(end), ly=Y(fuelAt(end)); c.lineTo(lx,ly);
+    c.strokeStyle='#1557FF'; c.lineWidth=2; c.lineJoin='round'; c.stroke();
+    c.lineTo(lx,h-padB); c.lineTo(X(0),h-padB); c.closePath();
+    var gr=c.createLinearGradient(0,padT,0,h-padB); gr.addColorStop(0,'rgba(21,87,255,.28)'); gr.addColorStop(1,'rgba(21,87,255,0)'); c.fillStyle=gr; c.fill();
+    if(end>=2.3){ c.beginPath(); c.arc(X(2.3),Y(244),3.5,0,Math.PI*2); c.fillStyle='#E5484D'; c.fill(); c.font='700 9px JetBrains Mono, monospace'; c.fillText('−48 л',X(2.3)+6,Y(244)-5) }
+    if(end>=8.75){ c.beginPath(); c.arc(X(8.75),Y(394),3.5,0,Math.PI*2); c.fillStyle='#12A66A'; c.fill(); c.font='700 9px JetBrains Mono, monospace'; c.fillText('+180 л',X(8.75)+6,Y(394)+3) }
+    c.beginPath(); c.arc(lx,ly,4,0,Math.PI*2); c.fillStyle='#fff'; c.fill(); c.strokeStyle='#1557FF'; c.lineWidth=2; c.stroke();
+  }
+
+  /* ---------- движение по пути ---------- */
+  function alongPath(path,p){ var L=path.getTotalLength(), d=clamp(p,0,1)*L, a=path.getPointAtLength(Math.max(0,d-0.5)), b=path.getPointAtLength(Math.min(L,d+0.5)), pt=path.getPointAtLength(d); return {x:pt.x,y:pt.y,a:Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI} }
+
+  /* ---------- движок прокрутки: читаем, сглаживаем, пишем ---------- */
+  var fx=[], lastY=-1, lastH=-1;
+  function addFx(o){ o.cur=-1; o.t=0; fx.push(o) }
+
+  // 1. первый экран: грузовик едет по маршруту, топливо убывает
+  var hero=$('#start'), heroPath=$('#heroPath'), heroTruck=$('#heroTruck'), liveFuel=$('#liveFuel'), liveD=$('#liveD');
+  addFx({
+    read:function(vh){ var r=hero.getBoundingClientRect(); return clamp(-r.top/(r.height*0.6),0,1) },
+    write:function(p){ var q=alongPath(heroPath,p); heroTruck.setAttribute('transform','translate('+q.x.toFixed(2)+' '+q.y.toFixed(2)+') rotate('+q.a.toFixed(1)+')'); liveFuel.textContent=Math.round(318-6*p)+' л'; liveD.textContent=p>0.98?'Прибыл · стоянка · бак 312 л':'В движении · 62 км/ч · трасса Астана–Караганда' }
+  });
+
+  // 2. история с телефоном
+  var story=$('#story'), stage=$('.stage',story), screens=$$('.screen'), ssteps=$$('.sstep'), dots=$$('#dots i'), lbl=$('#stageLbl');
+  var miniPath=$('#miniPath'), miniTruck=$('#miniTruck'), miniSpd=$('#miniSpd'), miniKm=$('#miniKm'), storyChart=$('#storyChart'), pushes=$$('#pushes .push'), curPh=-1;
+  addFx({
+    read:function(){ var r=story.getBoundingClientRect(), sh=stage.offsetHeight, travel=r.height-sh; return travel>0?clamp((stage.getBoundingClientRect().top-r.top)/travel,0,1):0 },
+    write:function(p){
+      var ph=Math.min(2,Math.floor(p*3)), lp=clamp(p*3-ph,0,1);
+      if(ph!==curPh){ curPh=ph; screens.forEach(function(s,i){s.classList.toggle('on',i===ph)}); ssteps.forEach(function(s,i){s.classList.toggle('on',i===ph)}); dots.forEach(function(d,i){d.classList.toggle('on',i===ph)}); lbl.textContent='Шаг '+(ph+1)+' из 3' }
+      if(ph===0){ var q=alongPath(miniPath,0.15+lp*0.55); miniTruck.setAttribute('transform','translate('+q.x.toFixed(1)+' '+q.y.toFixed(1)+') rotate('+q.a.toFixed(1)+')'); miniSpd.textContent=Math.round(Math.min(1,lp*4)*62); miniKm.textContent=Math.round(120+lp*64) }
+      else if(ph===1){ drawChart(storyChart,lp) }
+      else { pushes.forEach(function(el,i){ el.classList.toggle('on', lp>i*0.25) }) }
+    }
+  });
+
+  // 3. график топлива на фото
+  var fuelPh=$('#fuelPh'), fuelChart=$('#fuelChart'), fuelLvl=$('#fuelLvl'), drainTag=$('#drainTag'), refuelTag=$('#refuelTag');
+  addFx({
+    read:function(vh){ var r=fuelPh.getBoundingClientRect(); return clamp((vh*0.9-r.top)/(vh*0.55),0,1) },
+    write:function(p){ drawChart(fuelChart,p); fuelLvl.textContent=Math.round(fuelAt(24*p))+' л'; drainTag.classList.toggle('on',p>0.1); refuelTag.style.opacity=p>0.37?1:0 }
+  });
+
+  // 4. стопка карточек техники
+  var stack=$('#stack'), vcards=$$('.vcard',stack), stackData=[];
+  function stackRead(vh){
+    if(stack.classList.contains('flat')) return;
+    for(var i=0;i<vcards.length;i++){ var r=vcards[i].getBoundingClientRect(); stackData[i]={top:r.top,h:r.height} }
+  }
+  function stackWrite(){
+    if(stack.classList.contains('flat')) return;
+    for(var i=0;i<vcards.length-1;i++){
+      var a=stackData[i], b=stackData[i+1]; if(!a||!b) continue;
+      var p=clamp(1-(b.top-a.top)/a.h,0,1), el=vcards[i];
+      if(p>0.001){ el.style.transform='scale('+(1-0.06*p).toFixed(4)+')'; el.style.setProperty('--sh',(p*0.35).toFixed(3)) }
+      else if(el.style.transform){ el.style.transform=''; el.style.setProperty('--sh','0') }
+    }
+  }
+  function stackCheck(){ var avail=window.innerHeight-64-30, tall=vcards.some(function(c){return c.offsetHeight>avail}); stack.classList.toggle('flat',tall||reduce); if(tall) vcards.forEach(function(c){c.style.transform='';c.style.setProperty('--sh','0')}) }
+  stackCheck(); window.addEventListener('resize',stackCheck,{passive:true});
+
+  // 5. шапка, нижняя панель
+  var hdr=$('#hdr'), bar=$('#bar');
+
+  function loop(){
+    var y=window.scrollY, vh=window.innerHeight, need=(y!==lastY||vh!==lastH);
+    if(need){ lastY=y; lastH=vh; fx.forEach(function(f){ f.t=f.read(vh) }); stackRead(vh); }
+    var busy=false;
+    fx.forEach(function(f){
+      var cur=f.cur<0?f.t:f.cur, nxt=reduce?f.t:cur+(f.t-cur)*0.16;
+      if(Math.abs(nxt-f.t)<0.0012) nxt=f.t; else busy=true;
+      if(nxt!==f.cur){ f.cur=nxt; f.write(nxt) }
+    });
+    if(need){ stackWrite(); hdr.classList.toggle('scrolled',y>8); bar.classList.toggle('show',y>hero.offsetTop+hero.offsetHeight*0.6) }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  /* часы на экране телефона */
+  (function(){var c=$('#clock'); function u(){var d=new Date(); c.textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')} u(); setInterval(u,30000)})();
+
+  /* ---------- калькулятор ---------- */
   var cars=$('#cars'), fuel=$('#fuel'), carsOut=$('#carsOut'), fuelOut=$('#fuelOut'), totalOut=$('#totalOut'), mOut=$('#mOut'), yOut=$('#yOut'), cta=$('#calcCta');
   function fmt(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')}
   function mln(n){return (n/1e6).toFixed(1).replace('.',',')+' млн'}
   function plural(n,f){var a=Math.abs(n)%100,b=a%10; if(a>10&&a<20)return f[2]; if(b>1&&b<5)return f[1]; if(b===1)return f[0]; return f[2]}
   var cur={lo:0,hi:0}, tw=null;
-  function render(lo,hi){
-    mOut.textContent=fmt(lo)+' – '+fmt(hi)+' ₸';
-    yOut.textContent=(lo*12>=1e6?mln(lo*12):fmt(lo*12))+' – '+(hi*12>=1e6?mln(hi*12):fmt(hi*12))+' ₸';
-  }
+  function render(lo,hi){ mOut.textContent=fmt(lo)+' – '+fmt(hi)+' ₸'; yOut.textContent=(lo*12>=1e6?mln(lo*12):fmt(lo*12))+' – '+(hi*12>=1e6?mln(hi*12):fmt(hi*12))+' ₸' }
   function calc(){
     var n=+cars.value, per=+fuel.value, f=n*per, lo=f*0.2, hi=f*0.35;
     carsOut.textContent=n; fuelOut.textContent=fmt(per)+' ₸'; totalOut.textContent=fmt(f)+' ₸';
@@ -742,7 +943,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   }
   cars.addEventListener('input',calc); fuel.addEventListener('input',calc); calc();
 
-  /* форма → WhatsApp */
+  /* ---------- форма → WhatsApp ---------- */
   $('#lead').addEventListener('submit',function(e){
     e.preventDefault();
     var ph=$('#phone'); if(ph.value.replace(/\D/g,'').length<10){ ph.focus(); ph.style.borderColor='var(--red)'; return }
@@ -751,34 +952,6 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
     $('#okMsg').classList.add('show');
     var w=window.open(url,'_blank'); if(!w) location.href=url;
   });
-
-
-  /* ---------- анимации ---------- */
-  document.documentElement.classList.add('js');
-  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* небольшая задержка внутри группы соседних блоков, не больше 240 мс */
-  $$('.rv').forEach(function(el){ var i=0, sib=el.previousElementSibling; while(sib && sib.classList.contains('rv')){ i++; sib=sib.previousElementSibling } el.style.setProperty('--d', Math.min(i,4)*60+'ms') });
-
-  /* появление при прокрутке */
-  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target) } }) },{rootMargin:'0px 0px -6% 0px',threshold:0.12});
-  $$('.rv').forEach(function(el){ io.observe(el) });
-
-  /* счётчики */
-  var cio=new IntersectionObserver(function(es){ es.forEach(function(e){ if(!e.isIntersecting) return; var el=e.target, to=+el.dataset.to, t0=null; cio.unobserve(el);
-    if(reduce){ el.textContent=to; return }
-    (function st(ts){ if(!t0) t0=ts; var k=Math.min(1,(ts-t0)/1000); k=1-Math.pow(1-k,3); el.textContent=Math.round(to*k); if(k<1) requestAnimationFrame(st) })(performance.now());
-  }) },{threshold:0.6});
-  $$('.cnt').forEach(function(el){ cio.observe(el) });
-
-  /* тень шапки */
-  var hdr=$('.hdr');
-  window.addEventListener('scroll',function(){ hdr.classList.toggle('scrolled', window.scrollY>8) },{passive:true});
-
-  /* нижняя панель появляется после первого экрана */
-  var bar=document.querySelector('.bar'), hero=$('#start');
-  function barCheck(){ bar.classList.toggle('show', window.scrollY > hero.offsetTop + hero.offsetHeight*0.6) }
-  window.addEventListener('scroll',barCheck,{passive:true}); barCheck();
 
   $('#year').textContent=new Date().getFullYear();
 })();
