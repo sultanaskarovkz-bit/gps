@@ -80,13 +80,23 @@ p{margin:0}
 @media (min-width:900px){.hdr .hdr-cta{display:inline-flex}}
 .ic-btn{width:44px;height:44px;border:1px solid var(--line-2);background:#fff;border-radius:10px;display:grid;place-items:center;cursor:pointer;padding:0}
 .ic-btn svg{width:22px;height:22px}
-.nav{position:fixed;inset:0;z-index:45;background:rgba(255,255,255,.98);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .25s,transform .25s,visibility 0s .25s;overflow:auto;padding:calc(var(--top) + 10px) var(--gutter) 100px}
-.nav.open{opacity:1;visibility:visible;transform:none;transition:opacity .25s,transform .25s}
-.nav-in{max-width:720px;margin:0 auto}
-.nav h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin:22px 0 6px;font-weight:700}
-.nav a{display:block;text-decoration:none;padding:12px 0;border-bottom:1px solid var(--line);font-weight:600;font-size:17px}
-.nav a.sub{font-weight:500;font-size:15px;color:var(--muted);padding:9px 0 9px 14px}
-.nav a.sub::before{content:"→ ";color:var(--blue)}
+.nav{position:fixed;inset:0;z-index:60;visibility:hidden;pointer-events:none;transition:visibility 0s .3s}
+.nav.open{visibility:visible;pointer-events:auto;transition:none}
+.nav-bg{position:absolute;inset:0;background:rgba(11,27,51,.45);opacity:0;transition:opacity .25s}
+.nav.open .nav-bg{opacity:1}
+.nav-panel{position:absolute;top:0;right:0;bottom:0;width:min(100%,440px);background:#fff;transform:translateX(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;box-shadow:-20px 0 60px -30px rgba(11,27,51,.5);padding-top:env(safe-area-inset-top,0px)}
+.nav.open .nav-panel{transform:none}
+.nav-head{display:flex;align-items:center;justify-content:space-between;height:var(--header);padding-inline:var(--gutter);border-bottom:1px solid var(--line);flex:none}
+.nav-head b{font-family:var(--display);font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+.nav-body{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:4px var(--gutter) 20px}
+.nav-body h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin:20px 0 4px;font-weight:700}
+.nav-body .links a{display:block;text-decoration:none;padding:11px 0;border-bottom:1px solid var(--line);font-weight:600;font-size:16px}
+.nav-body .links a.sub{font-weight:500;font-size:14.5px;color:var(--muted);padding:8px 0 8px 14px}
+.nav-body .links a.sub::before{content:"→ ";color:var(--blue)}
+.nav-foot{flex:none;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px var(--gutter) calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:#fff}
+.nav-foot .btn{width:100%;padding-inline:10px;font-size:15px}
+html.nav-open{overflow:hidden}
+html.nav-open body{position:fixed;left:0;right:0;top:calc(-1 * var(--sy,0px));overflow:hidden}
 
 /* кнопки */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-family:var(--body);font-weight:700;font-size:16px;padding:0 22px;min-height:54px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:transform .15s,background .15s;white-space:nowrap}
@@ -145,12 +155,20 @@ p{margin:0}
 .hero-ph{position:relative}
 .hero-ph .ph{aspect-ratio:4/3}
 @media (min-width:900px){.hero-ph .ph{aspect-ratio:5/5.4}}
-.route{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.route .rl{fill:none;stroke:#fff;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;opacity:.95;vector-effect:non-scaling-stroke}
-.route .rb{fill:none;stroke:var(--blue);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.route .pin{fill:var(--blue);stroke:#fff;stroke-width:.7;transform-box:fill-box;transform-origin:50% 100%}
-.route .ring{fill:none;stroke:var(--blue);stroke-width:.5;opacity:0;transform-box:fill-box;transform-origin:center}
-.route .truck{fill:var(--ink);stroke:#fff;stroke-width:.5;opacity:0}
+.mapcard{position:absolute;left:12px;top:12px;width:min(72%,340px);background:#fff;border-radius:14px;padding:8px;box-shadow:0 14px 40px -14px rgba(11,27,51,.5)}
+@media (min-width:480px){.mapcard{left:16px;top:16px}}
+.mapcard .mc-h{display:flex;justify-content:space-between;align-items:center;padding:2px 4px 7px;font-size:11.5px;font-weight:600;color:var(--muted)}
+.mapcard .mc-h span:first-child{display:inline-flex;align-items:center;gap:6px;color:var(--ink)}
+.mapcard .mc-h i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(18,166,106,.2)}
+.mapcard .mc-h .mono{font-family:var(--mono);font-weight:500}
+.mapcard svg{display:block;width:100%;height:auto;border-radius:9px;background:#EEF2F8}
+.mapcard .rd{fill:none;stroke:#D5DDE8;stroke-width:13;stroke-linecap:round;stroke-linejoin:round}
+.mapcard .rd2{fill:none;stroke:#fff;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+.mapcard .rt{fill:none;stroke:var(--blue);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
+.mapcard .pin{fill:var(--blue);stroke:#fff;stroke-width:1.5}
+.mapcard .lbl{font:600 10px var(--body);fill:var(--ink)}
+.mapcard .truck{fill:var(--ink);stroke:#fff;stroke-width:1.5}
+.mapcard .halo{fill:rgba(21,87,255,.18);stroke:none}
 .live{position:absolute;left:12px;right:12px;bottom:12px;background:rgba(255,255,255,.96);border-radius:12px;padding:12px 14px;box-shadow:0 12px 32px -12px rgba(11,27,51,.45);display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
 @media (min-width:480px){.live{left:16px;right:auto;bottom:16px;min-width:320px}}
 .live .dot{width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(18,166,106,.2)}
@@ -158,27 +176,19 @@ p{margin:0}
 .live .d{font-size:12.5px;color:var(--muted);margin-top:2px}
 .live .lf{text-align:right;font-family:var(--mono);font-size:15px;color:var(--blue);font-weight:500;white-space:nowrap;font-variant-numeric:tabular-nums}
 .live .lf small{display:block;font-family:var(--body);color:var(--muted);font-weight:400;font-size:11px}
-.scroll-cue{display:flex;justify-content:center;gap:8px;align-items:center;margin-top:18px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
-.scroll-cue i{width:18px;height:28px;border:2px solid var(--line-2);border-radius:10px;position:relative}
-.scroll-cue i::after{content:"";position:absolute;left:50%;top:5px;width:3px;height:6px;margin-left:-1.5px;border-radius:2px;background:var(--blue);animation:cue 1.6s infinite}
-@keyframes cue{0%{transform:translateY(0);opacity:1}100%{transform:translateY(10px);opacity:0}}
-@media (min-width:900px){.scroll-cue{justify-content:flex-start}}
 
 /* загрузка первого экрана */
 @keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes phIn{from{opacity:0;transform:scale(1.06)}to{opacity:1;transform:none}}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes pinDrop{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
-@keyframes ring{0%{transform:scale(.4);opacity:.7}100%{transform:scale(2.4);opacity:0}}
-@keyframes show{to{opacity:1}}
 .js .hero-top{animation:up .7s ease-out both}
 .js .hero-bottom{animation:up .7s .2s ease-out both}
 .js .hero-ph .ph img{animation:phIn 1s .1s ease-out both}
-.js .route .rl,.js .route .rb{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.3s cubic-bezier(.4,0,.2,1) .5s forwards}
-.js .route .pin{opacity:0;animation:pinDrop .5s cubic-bezier(.2,.8,.2,1) 1.6s both}
-.js .route .ring{animation:ring 2.4s ease-out 2.2s infinite}
-.js .route .truck{animation:show .4s 1.2s forwards}
-.js .live{animation:up .6s 1.9s ease-out both}
+.js .mapcard{animation:up .6s .5s ease-out both}
+.js .mapcard .rt{animation:draw 1.2s cubic-bezier(.4,0,.2,1) 1s forwards}
+.js .mapcard .pin{opacity:0;animation:pinDrop .5s cubic-bezier(.2,.8,.2,1) 2s both}
+.js .live{animation:up .6s .9s ease-out both}
 
 /* ===== появление при прокрутке ===== */
 .js .rv{opacity:0;transform:translateY(20px);transition:opacity .7s ease-out,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0ms)}
@@ -285,6 +295,71 @@ p{margin:0}
 .cities{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .cities span{font-weight:600;font-size:13.5px;padding:8px 12px;border-radius:999px;background:var(--bg);border:1px solid var(--line-2)}
 
+/* ===== тест-драйв ===== */
+.offer{display:grid;gap:12px}
+@media (min-width:760px){.offer{grid-template-columns:repeat(3,1fr)}}
+.offer .card{padding:20px;display:grid;gap:8px;align-content:start}
+.offer .card.hi{background:var(--ink);color:#fff;border-color:var(--ink)}
+.offer .card.hi p{color:rgba(255,255,255,.75)}
+.offer .num{font-family:var(--display);font-weight:800;font-size:clamp(26px,6vw,36px);line-height:1;color:var(--blue)}
+.offer .card.hi .num{color:#fff}
+.offer h3{font-size:17px}
+.offer p{color:var(--muted);font-size:14.5px}
+.offer .zero{justify-self:start;padding:4px 10px;border-radius:999px;background:var(--orange);color:#fff;font-weight:700;font-size:12.5px;letter-spacing:.04em}
+
+/* ===== комплекты ===== */
+.kits{display:grid;gap:12px}
+@media (min-width:760px){.kits{grid-template-columns:repeat(3,1fr)}}
+.kit{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:10px;align-content:start;position:relative}
+.kit.pop{border-color:var(--blue);box-shadow:0 0 0 3px rgba(21,87,255,.12)}
+.kit .k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.kit .pop-tag{position:absolute;top:-11px;left:16px;padding:4px 10px;border-radius:999px;background:var(--blue);color:#fff;font-size:12px;font-weight:700}
+.kit h3{font-size:18px}
+.kit .for{color:var(--muted);font-size:14px}
+.kit .price{font-family:var(--display);font-weight:700;font-size:15px;margin-top:4px}
+.kit .price small{display:block;font-family:var(--body);font-weight:500;color:var(--muted);font-size:12.5px;margin-top:2px}
+.kit .btn{margin-top:6px;width:100%}
+
+/* ===== видео и отзывы ===== */
+.videos{display:grid;gap:12px;margin-top:24px}
+@media (min-width:720px){.videos{grid-template-columns:repeat(3,1fr)}}
+.yt{display:block;position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:#0B1B33;text-decoration:none;color:#fff}
+.yt img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:transform .5s,opacity .3s}
+.yt:hover img{transform:scale(1.04);opacity:1}
+.yt .play{position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:var(--orange);display:grid;place-items:center;box-shadow:0 10px 30px -8px rgba(255,107,26,.9)}
+.yt .play svg{width:22px;height:22px;fill:#fff;margin-left:3px}
+.yt .cap{position:absolute;left:0;right:0;bottom:0;padding:28px 14px 12px;background:linear-gradient(transparent,rgba(11,27,51,.85));font-weight:600;font-size:14px}
+.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.reviews{display:grid;gap:12px;margin-top:24px}
+@media (min-width:860px){.reviews{grid-template-columns:1.4fr 1fr}}
+.rev{padding:20px 22px;border-radius:var(--r);background:var(--bg);border:1px solid var(--line);font-size:15px;line-height:1.55;display:grid;gap:10px;align-content:start}
+.rev .stars{color:#F5A623;letter-spacing:2px;font-size:14px}
+.rev footer{font-size:13px;color:var(--muted);font-weight:600}
+.rev.more{background:var(--surface);justify-items:start}
+.rev.more p{color:var(--muted);font-size:14.5px}
+
+/* ===== команда ===== */
+.team{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (min-width:760px){.team{grid-template-columns:repeat(4,1fr)}}
+.tm{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;gap:8px;justify-items:start;align-content:start}
+.tm .av{width:72px;height:72px;border-radius:50%;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:20px;overflow:hidden}
+.tm .av img{width:100%;height:100%;object-fit:cover}
+.tm .av svg{width:30px;height:30px;stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tm b{font-weight:700;font-size:15px;line-height:1.25}
+.tm span{color:var(--muted);font-size:13px;line-height:1.35}
+
+/* ===== новости ===== */
+.news{display:grid;gap:12px}
+@media (min-width:720px){.news{grid-template-columns:repeat(3,1fr)}}
+.nw{display:grid;gap:8px;align-content:start;padding:18px;border-radius:var(--r);background:var(--bg);border:1px solid var(--line);text-decoration:none;transition:border-color .2s,transform .2s}
+.nw:hover{border-color:var(--blue);transform:translateY(-2px)}
+.nw .meta{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);font-weight:600}
+.nw .meta .tg{color:var(--blue);background:var(--blue-soft);padding:3px 8px;border-radius:999px}
+.nw h3{font-size:16px;line-height:1.3;font-family:var(--body);font-weight:700;text-wrap:pretty}
+.nw p{color:var(--muted);font-size:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.nw .src{font-size:12.5px;color:var(--muted);margin-top:auto}
+.news-note{text-align:center;font-size:13px;color:var(--muted);margin-top:14px}
+
 /* ===== платформа ===== */
 .feat4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
 .feat4 div{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:14px;font-weight:600;display:flex;gap:10px;align-items:center}
@@ -305,8 +380,14 @@ p{margin:0}
 .calc{display:grid;gap:16px}
 @media (min-width:860px){.calc{grid-template-columns:1fr 1fr;gap:24px;align-items:start}}
 .calc .card{padding:20px}
-.field label{display:flex;justify-content:space-between;align-items:baseline;font-size:14.5px;color:var(--muted);margin-bottom:6px;gap:10px}
-.field label output{font-family:var(--display);font-weight:700;font-size:18px;color:var(--ink);white-space:nowrap}
+.field .fl{display:flex;justify-content:space-between;align-items:center;font-size:14.5px;color:var(--muted);margin-bottom:6px;gap:10px}
+.field .fl label{flex:1 1 auto}
+.inp{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-2);border-radius:10px;padding:0 10px;background:#fff;flex:none}
+.inp:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(21,87,255,.15)}
+.inp input{width:7.5ch;border:0;outline:0;background:transparent;font-family:var(--display);font-weight:700;font-size:17px;color:var(--ink);text-align:right;padding:9px 0;-moz-appearance:textfield}
+.inp input.w{width:10.5ch}
+.inp input::-webkit-outer-spin-button,.inp input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.inp span{font-size:13px;color:var(--muted);font-weight:600}
 .field + .field{margin-top:16px}
 input[type=range]{width:100%;appearance:none;-webkit-appearance:none;height:36px;background:transparent;margin:0}
 input[type=range]::-webkit-slider-runnable-track{height:6px;background:var(--line-2);border-radius:3px}
@@ -317,7 +398,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .out{display:grid;gap:10px}
 .big{padding:18px 20px;border-radius:var(--r);background:var(--ink);color:#fff}
 .big small{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.7;margin-bottom:6px}
-.big b{display:block;font-family:var(--display);font-weight:700;font-size:clamp(22px,6vw,32px);line-height:1.1;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.big b{display:block;font-family:var(--display);font-weight:700;font-size:clamp(20px,5.4vw,30px);line-height:1.15;font-variant-numeric:tabular-nums}
+.big b span{white-space:nowrap}
 .big.y{background:var(--green)}
 .big i{display:block;font-style:normal;font-size:13.5px;opacity:.8;margin-top:6px}
 
@@ -376,8 +458,8 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .js .rv,.js .rv .ph img,.js .rv .vph img,.js .mi,.js .route .rl,.js .route .rb,.js .route .pin,.js .route .truck,.js .live,.js .hero-top,.js .hero-bottom,.js .hero-ph .ph img{opacity:1;transform:none;stroke-dashoffset:0;animation:none;transition:none}
-  .js .route .ring,.scroll-cue i::after{animation:none}
+  .js .rv,.js .rv .ph img,.js .rv .vph img,.js .mi,.js .live,.js .hero-top,.js .hero-bottom,.js .hero-ph .ph img{opacity:1;transform:none;stroke-dashoffset:0;animation:none;transition:none}
+  .js .mapcard,.js .mapcard .rt,.js .mapcard .pin{animation:none;opacity:1;stroke-dashoffset:0}
   .stack .vcard{position:static;transform:none!important}
 }
 </style>
@@ -401,31 +483,39 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   </div>
 </header>
 
-<nav class="nav" id="nav" aria-label="Разделы сайта">
-  <div class="nav-in">
-    <h4>Услуги</h4>
-    <a href="#gps-monitoring">GPS-мониторинг транспорта</a>
-    <a href="#kontrol-topliva">Контроль топлива</a>
-    <a class="sub" href="#gruzovye">Грузовой транспорт</a>
-    <a class="sub" href="#spectehnika">Спецтехника</a>
-    <a class="sub" href="#selhoz">Сельхозтехника</a>
-    <a class="sub" href="#karernaya">Карьерная техника</a>
-    <a class="sub" href="#toplivozapravshik">Топливозаправщики</a>
-    <a class="sub" href="#legkovye">Легковые и служебные</a>
-    <a href="#montazh">Как это работает</a>
-    <a href="#platforma">Платформа Multitrack</a>
-    <a href="#oborudovanie">Оборудование Omnicomm</a>
-    <h4>Решение</h4>
-    <a href="#kalkulyator">Калькулятор экономии</a>
-    <a href="#keisy">Кейсы</a>
-    <a href="#pochemu-my">Почему мы</a>
-    <a href="#kontakty">Контакты и заявка</a>
-    <div class="btns" style="margin-top:22px">
+<div class="nav" id="nav" aria-hidden="true">
+  <div class="nav-bg" id="navBg"></div>
+  <nav class="nav-panel" aria-label="Разделы сайта">
+    <div class="nav-head"><b>Меню</b><button class="ic-btn" id="navClose" aria-label="Закрыть меню"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="nav-body"><div class="links">
+      <h4>Услуги</h4>
+      <a href="#gps-monitoring">GPS-мониторинг транспорта</a>
+      <a href="#kontrol-topliva">Контроль топлива</a>
+      <a class="sub" href="#gruzovye">Грузовой транспорт</a>
+      <a class="sub" href="#spectehnika">Спецтехника</a>
+      <a class="sub" href="#selhoz">Сельхозтехника</a>
+      <a class="sub" href="#karernaya">Карьерная техника</a>
+      <a class="sub" href="#toplivozapravshik">Топливозаправщики</a>
+      <a class="sub" href="#legkovye">Легковые и служебные</a>
+      <a href="#montazh">Как это работает</a>
+      <a href="#test-drive">Бесплатный тест-драйв</a>
+      <a href="#komplekty">Комплекты</a>
+      <a href="#platforma">Платформа Multitrack</a>
+      <a href="#oborudovanie">Оборудование Omnicomm</a>
+      <h4>Решение</h4>
+      <a href="#kalkulyator">Калькулятор экономии</a>
+      <a href="#keisy">Кейсы, отзывы и видео</a>
+      <a href="#komanda">Команда</a>
+      <a href="#novosti">Новости отрасли</a>
+      <a href="#pochemu-my">Почему мы</a>
+      <a href="#kontakty">Контакты и заявка</a>
+    </div></div>
+    <div class="nav-foot">
       <a class="btn btn-wa" href="https://wa.me/77778703080?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20GPS-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3" target="_blank" rel="noopener">WhatsApp</a>
       <a class="btn btn-o" href="tel:+77778703080">+7 777 870 3080</a>
     </div>
-  </div>
-</nav>
+  </nav>
+</div>
 
 <main>
 
@@ -438,17 +528,19 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
       <p class="plain">Прибор в машину, датчик в бак. На телефоне видите: <b>где машина, сколько топлива и кто слил.</b></p>
     </div>
     <div class="hero-ph" id="hero-ph">
-      <figure class="ph"><img src="https://images.unsplash.com/photo-1708193203896-ba0630862bb6?auto=format&fit=crop&w=1200&q=72" alt="Грузовики на трассе, вид сверху" fetchpriority="high">
-      <svg class="route" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <path class="rl" pathLength="1" d="M-6 30 C 12 27, 22 46, 34 50 S 50 52, 55 44"/>
-        <path class="rb" id="heroPath" pathLength="1" d="M-6 30 C 12 27, 22 46, 34 50 S 50 52, 55 44"/>
-        <g transform="translate(55 44)">
-          <circle class="ring" r="4"/>
-          <g class="pin" transform="scale(.9)"><path d="M0 0c-2.6-3.1-3.6-4.6-3.6-6.4a3.6 3.6 0 0 1 7.2 0c0 1.8-1 3.3-3.6 6.4z"/><circle cy="-6.4" r="1.4" fill="#fff" stroke="none"/></g>
-        </g>
-        <g class="truck" id="heroTruck"><circle r="5" fill="rgba(21,87,255,.22)" stroke="none"/><rect x="-2.8" y="-1.4" width="5.6" height="2.8" rx=".7"/><rect x="1.3" y="-1" width="1.3" height="2" rx=".3" fill="#fff" stroke="none"/></g>
-      </svg>
-      </figure>
+      <figure class="ph"><img src="https://images.unsplash.com/photo-1708193203896-ba0630862bb6?auto=format&fit=crop&w=1200&q=72" alt="Грузовики на трассе, вид сверху" fetchpriority="high"></figure>
+      <div class="mapcard" aria-hidden="true">
+        <div class="mc-h"><span><i></i>7 машин онлайн</span><span class="mono" id="mapClock">14:32</span></div>
+        <svg viewBox="0 0 320 200">
+          <defs><pattern id="g" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="rgba(11,27,51,.06)"/></pattern></defs>
+          <rect width="320" height="200" fill="url(#g)"/>
+          <rect x="112" y="80" width="56" height="52" rx="3" fill="#E2E8F1"/><rect x="250" y="80" width="60" height="52" rx="3" fill="#E2E8F1"/><rect x="12" y="78" width="60" height="54" rx="3" fill="#E2E8F1"/><rect x="112" y="166" width="100" height="30" rx="3" fill="#E2E8F1"/><rect x="250" y="8" width="60" height="34" rx="3" fill="#E2E8F1"/>
+          <path class="rd" d="M-10 150H330M90-10V210M230-10V210M40 60H330"/><path class="rd2" d="M-10 150H330M90-10V210M230-10V210M40 60H330"/>
+          <path class="rt" id="heroPath" pathLength="1" d="M-10 150H78Q90 150 90 138V72Q90 60 102 60H230"/>
+          <g transform="translate(230 60)"><g class="pin"><path d="M0 0c-5.2-6.2-7.2-9.2-7.2-12.8a7.2 7.2 0 0 1 14.4 0c0 3.6-2 6.6-7.2 12.8z"/><circle cy="-12.8" r="2.8" fill="#fff" stroke="none"/></g><rect x="-30" y="6" width="60" height="16" rx="8" fill="#fff" stroke="#DCE3ED"/><text class="lbl" y="17" text-anchor="middle">Склад №3</text></g>
+          <g id="heroTruck"><circle class="halo" r="11"/><rect class="truck" x="-8" y="-4.5" width="16" height="9" rx="2"/><rect x="3.5" y="-3" width="3.5" height="6" rx="1" fill="#fff"/></g>
+        </svg>
+      </div>
       <div class="live" aria-label="Пример карточки машины в приложении">
         <span class="dot"></span>
         <div><div class="n">КамАЗ 65115 · 412 ABC 01</div><div class="d" id="liveD">В движении · 62 км/ч · трасса Астана–Караганда</div></div>
@@ -466,7 +558,6 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
         <div><b>1 день</b><span>от звонка до установки</span></div>
         <div><b>24/7</b><span>техподдержка</span></div>
       </div>
-      <div class="scroll-cue"><i></i>листайте, машина поедет</div>
     </div>
   </div>
 </section>
@@ -658,6 +749,55 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   </div>
 </section>
 
+<!-- ===== ТЕСТ-ДРАЙВ ===== -->
+<section class="sec" id="test-drive">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow">Без риска</div>
+      <h2>Попробуйте бесплатно, прежде чем платить</h2>
+      <p class="lead">Сначала показываем результат на вашей технике, потом договариваемся о цене.</p>
+    </div>
+    <div class="offer">
+      <div class="card hi rv"><span class="zero">0 ₸</span><div class="num">15 дней</div><h3>Тест-драйв на вашей машине</h3><p>Ставим терминал и датчик на одну машину, две недели смотрите отчёты. Не увидели пользы, снимаем оборудование без вопросов и оплаты.</p></div>
+      <div class="card rv"><div class="num">1 день</div><h3>Демо-доступ к платформе</h3><p>Открываем Multitrack с реальными машинами. Карта, заправки и сливы, отчёты за смену. Поймёте, как это выглядит, до установки.</p></div>
+      <div class="card rv"><div class="num">24 ч</div><h3>Расчёт под ваш парк</h3><p>Узнаём тип техники, баки и задачи. Присылаем смету с оборудованием, монтажом и абонентской платой по каждой машине.</p></div>
+    </div>
+    <div class="btns rv" style="margin-top:22px;justify-content:center"><a class="btn btn-p" href="#kontakty" style="flex:0 1 340px" data-need="Бесплатный тест-драйв">Получить тест-драйв</a></div>
+  </div>
+</section>
+
+<!-- ===== КОМПЛЕКТЫ ===== -->
+<section class="sec sheet" id="komplekty">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow">Готовые решения</div>
+      <h2>Три комплекта под любую технику</h2>
+      <p class="lead">В каждый входят оборудование Omnicomm, монтаж, настройка, обучение и поддержка 24/7.</p>
+    </div>
+    <div class="kits">
+      <div class="kit rv">
+        <span class="k">Базовый</span><h3>GPS</h3><div class="for">Легковые, служебные, лёгкие фургоны</div>
+        <ul class="ul"><li>Терминал GPS/ГЛОНАСС или OBD II</li><li>Карта, маршруты, пробег, геозоны</li><li>Уведомления и отчёты по смене</li></ul>
+        <div class="price">Цена под ваш парк<small>зависит от количества машин</small></div>
+        <a class="btn btn-o" href="#kontakty" data-need="Расчёт стоимости">Узнать цену</a>
+      </div>
+      <div class="kit pop rv">
+        <span class="pop-tag">Берут чаще всего</span>
+        <span class="k">Оптимальный</span><h3>GPS + топливо</h3><div class="for">Грузовые, спецтехника, автобусы</div>
+        <ul class="ul"><li>Терминал + датчик уровня топлива LLS5</li><li>Тарировка бака, точность до 3%</li><li>Заправки, сливы, сверка с топливными картами</li></ul>
+        <div class="price">Цена под ваш парк<small>зависит от объёма и формы баков</small></div>
+        <a class="btn btn-p" href="#kontakty" data-need="Расчёт стоимости">Узнать цену</a>
+      </div>
+      <div class="kit rv">
+        <span class="k">Максимальный</span><h3>GPS + топливо + контроль работы</h3><div class="for">Карьер, агро, заправщики, опасные грузы</div>
+        <ul class="ul"><li>Всё из оптимального комплекта</li><li>CAN-шина, моточасы, идентификация водителя</li><li>Датчики на заправщик и цистерну, видео по запросу</li></ul>
+        <div class="price">Цена под ваш парк<small>считаем по задаче</small></div>
+        <a class="btn btn-o" href="#kontakty" data-need="Расчёт стоимости">Узнать цену</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===== ПЛАТФОРМА ===== -->
 <section class="sec" id="platforma">
   <div class="wrap split">
@@ -701,9 +841,15 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
     </div>
     <div class="calc">
       <div class="card rv">
-        <div class="field"><label for="cars">Машин в парке<output id="carsOut" for="cars">10</output></label><input type="range" id="cars" min="1" max="200" value="10"></div>
-        <div class="field"><label for="fuel">Топливо на одну машину в месяц<output id="fuelOut" for="fuel">300 000 ₸</output></label><input type="range" id="fuel" min="50000" max="2000000" step="10000" value="300000"></div>
-        <p class="note">Расход парка в месяц: <b id="totalOut">3 000 000 ₸</b>. Расчёт по нашим внедрениям: экономия ГСМ 20–35%.</p>
+        <div class="field">
+          <div class="fl"><label for="carsN">Машин в парке</label><span class="inp"><input type="number" id="carsN" min="1" max="5000" value="10" inputmode="numeric"><span>шт</span></span></div>
+          <input type="range" id="cars" min="1" max="200" value="10" aria-label="Машин в парке, ползунок">
+        </div>
+        <div class="field">
+          <div class="fl"><label for="fuelN">Топливо на одну машину в месяц</label><span class="inp"><input type="number" class="w" id="fuelN" min="0" max="50000000" step="1000" value="300000" inputmode="numeric"><span>₸</span></span></div>
+          <input type="range" id="fuel" min="50000" max="2000000" step="10000" value="300000" aria-label="Топливо на машину, ползунок">
+        </div>
+        <p class="note">Двигайте ползунок или впишите свою цифру. Расход парка в месяц: <b id="totalOut">3 000 000 ₸</b>. Расчёт по нашим внедрениям: экономия ГСМ 20–35%.</p>
       </div>
       <div class="out">
         <div class="big rv"><small>экономия в месяц</small><b id="mOut">600 000 – 1 050 000 ₸</b><i>при снижении расхода ГСМ на 20–35%</i></div>
@@ -726,7 +872,45 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
       <div class="card case rv"><span class="k">Карьерная техника</span><div class="num"><span class="cnt" data-to="25">0</span>%+<small>экономии топлива каждый месяц</small></div><p>Выбрали нас, несмотря на конкурентов с ценой ниже. Экономия пошла с первого месяца.</p></div>
       <div class="card case rv"><span class="k">Строительство · Коркем-Сервис Центр</span><div class="num"><span class="cnt" data-to="500">0</span> тыс. ₸<small>экономии топлива в месяц</small></div><p>Парк строительной техники оснащён решением Omnicomm без остановки работ.</p></div>
     </div>
-    <blockquote class="quote rv">Благодарим ТОО «Контроль Техники» за внедрение GPS-мониторинга, качественный анализ топливных данных и своевременную техническую поддержку. Рекомендуем как компетентного партнёра.<footer>Из официального отзыва клиента</footer></blockquote>
+    <div class="videos" id="videos">
+      <a class="yt rv" href="https://www.youtube.com/watch?v=XkeBMIkaYPs" data-yt="XkeBMIkaYPs" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/XkeBMIkaYPs/hqdefault.jpg" alt="" loading="lazy"><span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="cap">Интерактивный дисплей ICON</span></a>
+      <a class="yt rv" href="https://www.youtube.com/watch?v=TeTtK1zr780" data-yt="TeTtK1zr780" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/TeTtK1zr780/hqdefault.jpg" alt="" loading="lazy"><span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="cap">Навигационный терминал ОКО</span></a>
+      <a class="yt rv" href="https://www.youtube.com/watch?v=FLBcMdL9peo" data-yt="FLBcMdL9peo" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/FLBcMdL9peo/hqdefault.jpg" alt="" loading="lazy"><span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="cap">Датчики топлива Omnicomm LLS</span></a>
+    </div>
+    <div class="reviews">
+      <blockquote class="rev rv"><span class="stars">★★★★★</span>Благодарим ТОО «Контроль Техники» за внедрение GPS-мониторинга, качественный анализ топливных данных и своевременную техническую поддержку. Рекомендуем как компетентного партнёра.<footer>Из официального благодарственного письма клиента</footer></blockquote>
+      <div class="rev more rv"><span class="stars">★★★★★</span><b>Отзывы клиентов и живые кейсы</b><p>Монтажи, отчёты по сливам и видео с объектов публикуем в Instagram.</p><a class="btn btn-o btn-sm" href="https://www.instagram.com/kontrolgroup.kz" target="_blank" rel="noopener">Смотреть в Instagram</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== КОМАНДА ===== -->
+<section class="sec" id="komanda">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow">Кто будет работать с вами</div>
+      <h2>Свои инженеры в четырёх городах</h2>
+      <p class="lead">Не колл-центр и не боты. Звоните, и трубку берёт человек, который сам ставил ваше оборудование.</p>
+    </div>
+    <div class="team">
+      <div class="tm rv" data-photo="director"><div class="av">АЛ</div><b>Арсен Лукпанов</b><span>Директор · Астана</span></div>
+      <div class="tm rv" data-photo="sales"><div class="av"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg></div><b>Отдел продаж</b><span>Расчёт и подбор комплекта за день</span></div>
+      <div class="tm rv" data-photo="support"><div class="av"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><b>Техподдержка 24/7</b><span>Разбор спорных сливов, помощь с отчётами</span></div>
+      <div class="tm rv" data-photo="install"><div class="av"><svg viewBox="0 0 24 24"><path d="M14 4a4 4 0 0 0-4 6l-6 6 2 2 6-6a4 4 0 0 0 6-4l-2 2-2-2 2-2z"/></svg></div><b>Инженеры-монтажники</b><span>Астана · Алматы · Кокшетау · Тараз</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== НОВОСТИ ===== -->
+<section class="sec sheet" id="novosti">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow">Новости отрасли</div>
+      <h2>Что происходит в транспорте и агро</h2>
+      <p class="lead">Подборка обновляется автоматически: транспорт, логистика, топливо, агросезон, телематика.</p>
+    </div>
+    <div class="news" id="news"></div>
+    <p class="news-note" id="newsNote"></p>
   </div>
 </section>
 
@@ -753,12 +937,15 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   <div class="wrap">
     <div class="sec-head rv">
       <div class="eyebrow">Заявка</div>
-      <h2>Расскажите про парк. Расчёт за день</h2>
+      <h2>Расскажите про парк. Ответим за день</h2>
     </div>
     <div class="contact-grid">
       <form class="form card rv" id="lead" novalidate>
         <div class="f"><label for="name">Имя</label><input id="name" name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться"></div>
         <div class="f"><label for="phone">Телефон *</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___ __ __" required></div>
+        <div class="f"><label for="need">Что нужно</label>
+          <select id="need" name="need"><option>Бесплатный тест-драйв</option><option selected>Расчёт стоимости</option><option>Демо-доступ к платформе</option><option>Консультация</option></select>
+        </div>
         <div class="f"><label for="fleet">Сколько техники</label>
           <select id="fleet" name="fleet"><option>1–5 единиц</option><option selected>5–20 единиц</option><option>20–50 единиц</option><option>50–100 единиц</option><option>Больше 100</option></select>
         </div>
@@ -783,7 +970,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   <div class="wrap ft">
     <div><b style="color:var(--ink);font-family:var(--display);font-size:13px;letter-spacing:.04em;text-transform:uppercase">Контроль Техники</b><br>ТОО «Контроль Техники» · официальный дилер Omnicomm в Казахстане · GPS-мониторинг и контроль топлива</div>
     <div class="soc">
-      <a href="https://www.instagram.com/kontrol.expert/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.instagram.com/kontrolgroup.kz" target="_blank" rel="noopener">Instagram</a>
       <a href="https://www.facebook.com/kontrol.expert" target="_blank" rel="noopener">Facebook</a>
       <a href="https://www.linkedin.com/company/kontrol.expert/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://www.youtube.com/user/OmnicommMoscow" target="_blank" rel="noopener">YouTube</a>
@@ -797,6 +984,59 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   <a class="btn btn-wa" href="https://wa.me/77778703080?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20GPS-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" style="width:26px;height:26px"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2m0 1.67c4.54 0 8.24 3.7 8.24 8.24s-3.7 8.24-8.24 8.24c-1.5 0-2.97-.41-4.25-1.18l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.35c0-4.54 3.7-8.24 8.3-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.14.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01"/></svg></a>
 </div>
 
+<script type="application/json" id="newsSeed">{
+  "updated": "2026-10-16",
+  "items": [
+    {
+      "title": "Контроль грузовиков в режиме 24/7: в Казахстане начали цифровой мониторинг фур",
+      "link": "https://bes.media/news/kontrol-gruzovikov-v-rezhime-247-v-kazahstane-nachali-tsifrovoy-monitoring-fur/",
+      "source": "BES.media",
+      "date": "2026-05-06",
+      "tag": "Транспорт",
+      "summary": "«КазАвтоЖол» запустил пилот по цифровому мониторингу грузовиков тяжелее 3,5 т: смарт-терминалы следят за состоянием водителя и дороги, при нарушениях диспетчер предупреждает, а после двух предупреждений данные уходят в полицию."
+    },
+    {
+      "title": "В Казахстане началась уборочная кампания",
+      "link": "https://kapital.kz/economic/150636/v-kazahstane-nachalas-uborochnaya-kampaniya.html",
+      "source": "Капитал.kz",
+      "date": "2026-07-20",
+      "tag": "Агро",
+      "summary": "Уборка стартовала в восьми областях и Шымкенте. Средняя урожайность 20,6 ц/га против 12,2 годом ранее, фермерам выделят около 401 тыс. тонн льготного дизтоплива."
+    },
+    {
+      "title": "Как искусственный интеллект ускоряет логистику от границы до склада",
+      "link": "https://kapital.kz/tehnology/148052/kak-iskusstvennyj-intellekt-uskoryaet-logistiku-ot-granicy-do-sklada.html",
+      "source": "Капитал.kz",
+      "date": "2026-05-18",
+      "tag": "Логистика",
+      "summary": "От автономных самосвалов на угольном разрезе и оптимизации маршрутов до роботизированных складов и госпроектов Smart Cargo и e-Kolik: какие цифровые инструменты уже доступны перевозчикам."
+    },
+    {
+      "title": "В Казахстане изменены правила перевозки опасных и тяжеловесных грузов",
+      "link": "https://kapital.kz/economic/146963/v-kazahstane-izmeneny-pravila-perevozki-opasnyh-i-tyazhelovesnyh-gruzov.html",
+      "source": "Капитал.kz",
+      "date": "2026-04-15",
+      "tag": "Транспорт",
+      "summary": "Минтранс согласовал правила с нормами ЕАЭС: ограничения для опасных грузов в туннелях категории E, новые сроки спецразрешений и повышенные допустимые осевые нагрузки. Приказ действует с 25 апреля 2026 года."
+    },
+    {
+      "title": "Дизель по 281: выдержит ли агросектор новый сезон",
+      "link": "https://finratings.kz/news/12216-dizel-po-281-vyderzhit-li-agrosektor-novyi-sezon/",
+      "source": "Finratings.kz",
+      "date": "2026-03-03",
+      "tag": "Агро",
+      "summary": "Льготное дизтопливо для посевной подорожало до 281 тенге за литр. Обсуждается выделение топлива аграриям заранее, с осени, поставки удобрений идут медленнее плана."
+    },
+    {
+      "title": "В Казахстане изменились тарифы на грузоперевозки",
+      "link": "https://www.lada.kz/kazakhstan-news/149131-v-kazakhstane-izmenilis-tarify-na-gruzoperevozki.html",
+      "source": "Lada.kz",
+      "date": "2026-02-06",
+      "tag": "Логистика",
+      "summary": "В январе 2026 года грузоперевозки подорожали в среднем на 3,8% к январю прошлого года. Сильнее всего тарифы выросли в Атырауской области и Улытау, снизились в Кызылординской."
+    }
+  ]
+}</script>
 <script>
 (function(){
   var $=function(s,c){return (c||document).querySelector(s)}, $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
@@ -805,11 +1045,17 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   document.documentElement.classList.add('js');
 
   /* ---------- меню ---------- */
-  var nav=$('#nav'), burger=$('#burger');
-  function toggleNav(o){ nav.classList.toggle('open',o); burger.setAttribute('aria-expanded',o?'true':'false'); burger.setAttribute('aria-label',o?'Закрыть меню':'Открыть меню'); document.body.style.overflow=o?'hidden':'';
-    burger.innerHTML=o?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>' }
-  burger.addEventListener('click',function(){toggleNav(!nav.classList.contains('open'))});
-  $$('a',nav).forEach(function(a){a.addEventListener('click',function(){toggleNav(false)})});
+  var nav=$('#nav'), burger=$('#burger'), html=document.documentElement, savedY=0;
+  function toggleNav(o){
+    if(o===nav.classList.contains('open')) return;
+    if(o){ savedY=window.scrollY; html.style.setProperty('--sy',savedY+'px'); html.classList.add('nav-open') }
+    nav.classList.toggle('open',o); nav.setAttribute('aria-hidden',o?'false':'true'); burger.setAttribute('aria-expanded',o?'true':'false');
+    if(!o){ html.classList.remove('nav-open'); var sb=html.style.scrollBehavior; html.style.scrollBehavior='auto'; window.scrollTo(0,savedY); html.style.scrollBehavior=sb }
+  }
+  burger.addEventListener('click',function(){toggleNav(true)});
+  $('#navClose').addEventListener('click',function(){toggleNav(false)});
+  $('#navBg').addEventListener('click',function(){toggleNav(false)});
+  $$('.links a',nav).forEach(function(a){a.addEventListener('click',function(e){ e.preventDefault(); var id=a.getAttribute('href'); toggleNav(false); setTimeout(function(){ var t=$(id); if(t){ t.scrollIntoView({behavior:'smooth',block:'start'}); history.replaceState(null,'',id) } },30) })});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')toggleNav(false)});
 
   /* ---------- заголовки под маской ---------- */
@@ -860,12 +1106,29 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   var fx=[], lastY=-1, lastH=-1;
   function addFx(o){ o.cur=-1; o.t=0; fx.push(o) }
 
-  // 1. первый экран: грузовик едет по маршруту, топливо убывает
-  var hero=$('#start'), heroPath=$('#heroPath'), heroTruck=$('#heroTruck'), liveFuel=$('#liveFuel'), liveD=$('#liveD');
-  addFx({
-    read:function(vh){ var r=hero.getBoundingClientRect(); return clamp(-r.top/(r.height*0.6),0,1) },
-    write:function(p){ var q=alongPath(heroPath,p); heroTruck.setAttribute('transform','translate('+q.x.toFixed(2)+' '+q.y.toFixed(2)+') rotate('+q.a.toFixed(1)+')'); liveFuel.textContent=Math.round(318-6*p)+' л'; liveD.textContent=p>0.98?'Прибыл · стоянка · бак 312 л':'В движении · 62 км/ч · трасса Астана–Караганда' }
-  });
+  // 1. первый экран: машинка сама едет по карте, карточка внизу живёт
+  var hero=$('#start'), heroPath=$('#heroPath'), heroTruck=$('#heroTruck'), liveFuel=$('#liveFuel'), liveD=$('#liveD'), heroPh=$('#hero-ph');
+  (function(){
+    var t0=null, LAP=11000, lastState='';
+    function ease(k){ return k<.5 ? 2*k*k : 1-Math.pow(-2*k+2,2)/2 }
+    function frame(ts){
+      if(!t0) t0=ts;
+      var r=heroPh.getBoundingClientRect(); var visible=r.bottom>0 && r.top<window.innerHeight;
+      if(visible && !document.hidden && !reduce){
+        var k=((ts-t0)%LAP)/LAP, drive=clamp((k-0.08)/0.78,0,1), p=ease(drive);
+        var q=alongPath(heroPath,p);
+        heroTruck.setAttribute('transform','translate('+q.x.toFixed(1)+' '+q.y.toFixed(1)+') rotate('+q.a.toFixed(1)+')');
+        var state = drive<=0 ? 'start' : drive>=1 ? 'end' : 'go';
+        if(state!==lastState){ lastState=state;
+          liveD.textContent = state==='go' ? 'В движении · 62 км/ч · к складу №3' : state==='end' ? 'Прибыл · Склад №3 · двигатель заглушен' : 'Выезд с базы · 08:12';
+          liveFuel.textContent = state==='end' ? '312 л' : '318 л';
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+    if(reduce){ var q=alongPath(heroPath,1); heroTruck.setAttribute('transform','translate('+q.x+' '+q.y+')'); }
+    requestAnimationFrame(frame);
+  })();
 
   // 2. история с телефоном
   var story=$('#story'), stage=$('.stage',story), screens=$$('.screen'), ssteps=$$('.sstep'), dots=$$('#dots i'), lbl=$('#stageLbl');
@@ -924,34 +1187,64 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:13.5px
   requestAnimationFrame(loop);
 
   /* часы на экране телефона */
-  (function(){var c=$('#clock'); function u(){var d=new Date(); c.textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')} u(); setInterval(u,30000)})();
+  (function(){var cs=[$('#clock'),$('#mapClock')]; function u(){var d=new Date(), t=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); cs.forEach(function(c){ if(c) c.textContent=t })} u(); setInterval(u,30000)})();
 
   /* ---------- калькулятор ---------- */
-  var cars=$('#cars'), fuel=$('#fuel'), carsOut=$('#carsOut'), fuelOut=$('#fuelOut'), totalOut=$('#totalOut'), mOut=$('#mOut'), yOut=$('#yOut'), cta=$('#calcCta');
+  var cars=$('#cars'), fuel=$('#fuel'), carsN=$('#carsN'), fuelN=$('#fuelN'), totalOut=$('#totalOut'), mOut=$('#mOut'), yOut=$('#yOut'), cta=$('#calcCta');
   function fmt(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')}
-  function mln(n){return (n/1e6).toFixed(1).replace('.',',')+' млн'}
+  function money(n){ return n>=1e6 ? (n/1e6).toFixed(1).replace('.',',')+' млн' : fmt(n) }
   function plural(n,f){var a=Math.abs(n)%100,b=a%10; if(a>10&&a<20)return f[2]; if(b>1&&b<5)return f[1]; if(b===1)return f[0]; return f[2]}
   var cur={lo:0,hi:0}, tw=null;
-  function render(lo,hi){ mOut.textContent=fmt(lo)+' – '+fmt(hi)+' ₸'; yOut.textContent=(lo*12>=1e6?mln(lo*12):fmt(lo*12))+' – '+(hi*12>=1e6?mln(hi*12):fmt(hi*12))+' ₸' }
+  function render(lo,hi){
+    mOut.innerHTML='<span>'+fmt(lo)+'</span> – <span>'+fmt(hi)+' ₸</span>';
+    yOut.innerHTML='<span>'+money(lo*12)+'</span> – <span>'+money(hi*12)+' ₸</span>';
+  }
   function calc(){
-    var n=+cars.value, per=+fuel.value, f=n*per, lo=f*0.2, hi=f*0.35;
-    carsOut.textContent=n; fuelOut.textContent=fmt(per)+' ₸'; totalOut.textContent=fmt(f)+' ₸';
+    var n=Math.max(1,Math.round(+carsN.value||1)), per=Math.max(0,Math.round(+fuelN.value||0)), f=n*per, lo=f*0.2, hi=f*0.35;
+    totalOut.textContent=fmt(f)+' ₸';
     cta.textContent='Получить расчёт для '+n+' '+plural(n,['машины','машин','машин']);
     var from={lo:cur.lo,hi:cur.hi}, t0=null; cur={lo:lo,hi:hi};
     if(tw) cancelAnimationFrame(tw);
     (function st(ts){ if(!t0) t0=ts; var k=Math.min(1,(ts-t0)/350); k=1-Math.pow(1-k,2); render(from.lo+(lo-from.lo)*k, from.hi+(hi-from.hi)*k); if(k<1) tw=requestAnimationFrame(st) })(performance.now());
   }
-  cars.addEventListener('input',calc); fuel.addEventListener('input',calc); calc();
+  cars.addEventListener('input',function(){ carsN.value=cars.value; calc() });
+  fuel.addEventListener('input',function(){ fuelN.value=fuel.value; calc() });
+  carsN.addEventListener('input',function(){ cars.value=clamp(+carsN.value||1,+cars.min,+cars.max); calc() });
+  fuelN.addEventListener('input',function(){ fuel.value=clamp(+fuelN.value||0,+fuel.min,+fuel.max); calc() });
+  [carsN,fuelN].forEach(function(i){ i.addEventListener('blur',function(){ if(i.value==='') { i.value=i.min; calc() } }) });
+  calc();
 
   /* ---------- форма → WhatsApp ---------- */
   $('#lead').addEventListener('submit',function(e){
     e.preventDefault();
     var ph=$('#phone'); if(ph.value.replace(/\D/g,'').length<10){ ph.focus(); ph.style.borderColor='var(--red)'; return }
-    var txt='Здравствуйте! Заявка с сайта multitrack.kz\nИмя: '+($('#name').value||'—')+'\nТелефон: '+ph.value+'\nТехника: '+$('#fleet').value+'\nЗадача: '+($('#msg').value||'—');
+    var txt='Здравствуйте! Заявка с сайта multitrack.kz\nЧто нужно: '+$('#need').value+'\nИмя: '+($('#name').value||'—')+'\nТелефон: '+ph.value+'\nТехника: '+$('#fleet').value+'\nЗадача: '+($('#msg').value||'—');
     var url='https://wa.me/77778703080?text='+encodeURIComponent(txt);
     $('#okMsg').classList.add('show');
     var w=window.open(url,'_blank'); if(!w) location.href=url;
   });
+
+  /* кнопки с data-need подставляют цель в форму */
+  var need=$('#need');
+  $$('[data-need]').forEach(function(a){ a.addEventListener('click',function(){ var v=a.getAttribute('data-need'); for(var i=0;i<need.options.length;i++){ if(need.options[i].text===v) need.selectedIndex=i } }) });
+
+  /* видео: по клику подставляем плеер вместо превью */
+  $$('.yt').forEach(function(a){ a.addEventListener('click',function(e){ e.preventDefault(); var id=a.getAttribute('data-yt'); var f=document.createElement('iframe'); f.src='https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0'; f.allow='autoplay; encrypted-media; picture-in-picture'; f.allowFullscreen=true; f.title=a.querySelector('.cap').textContent; a.innerHTML=''; a.appendChild(f); a.style.pointerEvents='none' }) });
+
+  /* новости: news.json, внутри сайта запасной набор */
+  (function(){
+    var box=$('#news'), note=$('#newsNote'), seed=null;
+    try{ seed=JSON.parse($('#newsSeed').textContent) }catch(e){}
+    function fmtDate(d){ var m=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек']; var x=new Date(d); return isNaN(x)?'':x.getDate()+' '+m[x.getMonth()]+' '+x.getFullYear() }
+    function esc(t){ return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}) }
+    function draw(data){
+      if(!data||!data.items||!data.items.length) return;
+      box.innerHTML=data.items.slice(0,6).map(function(it){ return '<a class="nw rv in" href="'+esc(it.link)+'" target="_blank" rel="noopener"><div class="meta"><span class="tg">'+esc(it.tag||'Новости')+'</span><span>'+fmtDate(it.date)+'</span></div><h3>'+esc(it.title)+'</h3><p>'+esc(it.summary)+'</p><span class="src">'+esc(it.source)+'</span></a>' }).join('');
+      note.textContent='Обновлено '+fmtDate(data.updated)+'. Источники указаны на карточках, полный текст открывается на сайте издания.';
+    }
+    draw(seed);
+    fetch('news.json',{cache:'no-store'}).then(function(r){ return r.ok?r.json():null }).then(function(d){ if(d) draw(d) }).catch(function(){});
+  })();
 
   $('#year').textContent=new Date().getFullYear();
 })();
